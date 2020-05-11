@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {catchError, map} from 'rxjs/operators';
 import { AbstractExtendedWebDriver } from 'protractor/built/browser';
 
@@ -37,9 +37,16 @@ export class ChatService {
     recipient_id: 'user',
     message: question
 }) ;
-  let answer = 'error';
+  // tslint:disable-next-line: quotemark
+  let answer = "I'm having an issue";
+  try {
+  await this.http.post<Response[]>(this.url, dataToSend).toPromise()
 
-  await this.http.post<Response[]>(this.url, dataToSend).toPromise().then( res => answer = res[0].text);
+  .then( res => answer = res[0].text)
+  ;
+} catch (err) {
+  return " I'm having a little trouble ";
+}
   return answer;
 
 }

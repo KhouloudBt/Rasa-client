@@ -20,3 +20,15 @@
 .message.from + .message.from {
   margin-top: -10px;
 }
+.widget {
+  display: none;
+  width: 350px;
+  right: 15px;
+  height: 500px;
+  bottom: 5%;
+  position: fixed;
+  background: #f7f7f7;
+  border-radius: 10px 10px 10px 10px;
+  box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 #00000096;
+}
+

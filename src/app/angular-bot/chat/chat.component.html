@@ -1,19 +1,44 @@
-<h1>JSExpert Angular Chat Bot</h1>
-<ng-container *ngFor="let message of messages">
-  <div class="message"
-[ngClass]="{ 'from': message.author === 'bot',
-'to': message.author === 'user' }">
-{{ message.content }}
+<div class="chat-box" *ngIf="visible" [@fadeInOut]="visible">
+  <div class="chat-box-header">
+    <div class="">
+      <div class="operator-status">
+        {{operator.status}}
+        <span class="operator-status-online">●</span>
+        <button class="chat-button-header" (click)="toggleChat()">✕</button>
+      </div>
+      <app-chat-avatar [image]="operator.avatar"></app-chat-avatar>
+      <h3 class="operator-name">
+        {{operator.name}}
+      </h3>
+    </div>
   </div>
+  <div class="chat-box-main">
+    <div class="chat-message-bottom" #bottom></div>
+  <ng-container *ngFor="let message of messages">
+    <div class="chat-message" [class.chat-message-sent]="message.author === 'user'"
+    [@fadeIn]
+    [class.chat-message-received]="message.author === 'bot'">
+ <div>
+  <div class="chat-message-text">
+     {{message.content}}
+   </div>
+ </div>
+ <div class="chat-message-date">
+   {{message.date | date: 'short'}}
+ </div>
+</div>
 </ng-container>
-<label *ngIf="messages.length == 0; else dialogInfo" for="nameField">Your message</label>
-<input [(ngModel)]="value" (keyup.enter)="sendMessage()" type="text">
-<button (click)="sendMessage()">Send</button>
-<ng-template #dialogInfo>
-<span [className]="'float-right'">Total messages: {{messages.length}}</span>
-</ng-template>
-
-
-
-
-
+</div>
+<div class="chat-box-footer">
+  <textarea type="text" class="chat-input-text" placeholder="Type message..."
+  [(ngModel)]="value" (keydown.enter)="sendMessage()" (keyup.enter)="message.value = ''"></textarea>
+<button type="submit" class="chat-input-submit" (click)="sendMessage()">
+{{buttonText}}
+</button>
+  <!-- <app-chat-input (send)="sendMessage($event)" (dismiss)="toggleChat()" [focus]="focus"></app-chat-input> -->
+</div>
+</div>
+<button class="chat-button" (click)="toggleChat()">
+  <span [@fadeIn] *ngIf="visible">✕</span>
+  <span [@fadeIn] *ngIf="!visible">?</span>
+</button>

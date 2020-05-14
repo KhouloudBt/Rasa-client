@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, throwError } from 'rxjs';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {catchError, map} from 'rxjs/operators';
-import { AbstractExtendedWebDriver } from 'protractor/built/browser';
+import {  Subject} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
+
 
 
 export class Message {
-  constructor(public author: string, public content: string) {}
+  constructor(public author: string, public content: string, public date: any) {
+
+  }
 }
 interface Response {
   recipient_id: string;
@@ -23,9 +24,9 @@ export class ChatService {
 
 
   async getBotAnswer(msg: string) {
-    const userMessage = new Message('user', msg);
+    const userMessage = new Message('user', msg, new Date().getTime());
     this.conversation.next([userMessage]);
-    const botMessage = new Message('bot', await this.getBotMessage(msg));
+    const botMessage = new Message('bot', await this.getBotMessage(msg), new Date().getTime());
 
     setTimeout(() => {
       this.conversation.next([botMessage]);
@@ -41,11 +42,10 @@ export class ChatService {
   let answer = "I'm having an issue";
   try {
   await this.http.post<Response[]>(this.url, dataToSend).toPromise()
-
   .then( res => answer = res[0].text)
   ;
 } catch (err) {
-  return " I'm having a little trouble ";
+  return " I'm having an issue  ";
 }
   return answer;
 

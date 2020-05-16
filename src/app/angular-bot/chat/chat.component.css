@@ -302,3 +302,34 @@ Sent message style
   border: 0;
   outline: none;
 }
+.avatar {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+.avatar-recieved{
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+  position: absolute;
+  left: 0;
+  bottom: -15px;
+  content:url("https://storage.proboards.com/6172192/images/gKhXFw_5W0SD4nwuMev1.png");
+
+}
+.avtar-sent{
+  position: absolute;
+  right: 0;
+  bottom: -15px;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+  content:url("https://cdn.dribbble.com/users/275794/screenshots/3128598/gbot_800.png");
+
+}

@@ -6,10 +6,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-synonyms.component.css']
 })
 export class AddSynonymsComponent implements OnInit {
-
+  idSelect: string;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  submit()
+  {
+
+
   }
 
 }

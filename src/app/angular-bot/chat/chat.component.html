@@ -22,6 +22,9 @@
   <div class="chat-message-text">
      {{message.content}}
    </div>
+   <app-chat-avatar *ngIf="message.author ==='user'" [image]="userAvatar" class="chat-message-from-avatar"></app-chat-avatar>
+   <app-chat-avatar *ngIf="message.author ==='bot'" [image]="botAvatar" class="chat-message-from-avatar"></app-chat-avatar>
+
  </div>
  <div class="chat-message-date">
    {{message.date | date: 'short'}}

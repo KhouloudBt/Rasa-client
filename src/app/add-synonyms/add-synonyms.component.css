@@ -1,0 +1,42 @@
+.f{
+  margin-top: 100px;
+  border: 10px;
+  width: fit-content;
+  border-radius: 20px;
+  border-color: black;
+  border-width: 20px;
+}
+.select{
+  width: unset;
+  margin: auto;
+}
+.text{
+will-change: auto;
+width: 200px
+
+}
+fieldset {
+  background-color: #eeeeee;
+  margin-top: 100px;
+  margin-left: 100px;
+  margin-block-end: auto;
+  margin-right: 150px;
+}
+
+legend {
+  background-color: gray;
+  color: white;
+  padding: 5px 10px;
+}
+
+input {
+  margin: 5px;
+}
+.button1
+{
+  width: 200px;
+  margin-left: 150px;
+  margin-top: 20px;
+}
+
+

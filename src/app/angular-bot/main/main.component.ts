@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+declare var jQuery: any;
+
 
 @Component({
   selector: 'app-main',
@@ -10,6 +12,9 @@ export class MainComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  //   $(document).ready(function() {
+  //     $('#example').DataTable();
+  // } );
   }
 
 }

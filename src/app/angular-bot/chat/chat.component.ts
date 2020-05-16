@@ -10,9 +10,9 @@ import { Subject } from 'rxjs';
   animations: [fadeInOut, fadeIn]
 })
 export class ChatComponent implements OnInit {
-  @ViewChild('bottom', {static: false}) bottom: ElementRef ;
+  @ViewChild('bottom', {static: true}) bottom: ElementRef ;
   @Input() public buttonText = '↩︎';
-  @Input() public theme: 'blue' | 'grey' | 'red' = 'blue';
+  @Input() public theme: 'blue' | 'grey' | 'red' = 'grey';
   @Input() public botName = 'Bot';
   @Input() public botAvatar = 'https://cdn.dribbble.com/users/275794/screenshots/3128598/gbot_800.png';
   @Input() public userAvatar = 'https://storage.proboards.com/6172192/images/gKhXFw_5W0SD4nwuMev1.png';
@@ -82,8 +82,8 @@ export class ChatComponent implements OnInit {
     this.visible = !this.visible;
   }
   sendMessage() {
+    // this.scrollToBottom();
     this.chatService.getBotAnswer(this.value);
-    this.scrollToBottom();
     this.value = '';
 
   }

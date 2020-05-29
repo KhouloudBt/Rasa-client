@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 export class ChatComponent implements OnInit {
   @ViewChild('bottom', {static: true}) bottom: ElementRef ;
   @Input() public buttonText = '↩︎';
-  @Input() public theme: 'blue' | 'grey' | 'red' = 'grey';
+  @Input() public theme: 'blue' | 'grey' | 'red' = 'blue';
   @Input() public botName = 'Bot';
   @Input() public botAvatar = 'https://cdn.dribbble.com/users/275794/screenshots/3128598/gbot_800.png';
   @Input() public userAvatar = 'https://storage.proboards.com/6172192/images/gKhXFw_5W0SD4nwuMev1.png';
@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit {
   public _visible = false;
 
   messages: Message[] = [];
-  value: string;
+  valeur: string;
 
   constructor(public chatService: ChatService) {
 
@@ -77,14 +77,16 @@ export class ChatComponent implements OnInit {
       setTimeout(() => this.visible = true, 1000);
     }
 
+
   }
+ 
   public toggleChat() {
     this.visible = !this.visible;
   }
   sendMessage() {
     // this.scrollToBottom();
-    this.chatService.getBotAnswer(this.value);
-    this.value = '';
+    this.chatService.getBotAnswer(this.valeur);
+    this.valeur = '';
 
   }
   @HostListener('document:keypress', ['$event'])

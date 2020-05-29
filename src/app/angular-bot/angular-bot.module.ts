@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ChatAvatarComponent } from './chat-avatar/chat-avatar.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DataTablesModule } from 'angular-datatables';
 
 
 
@@ -19,6 +20,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CommonModule,
     FormsModule,
     BrowserAnimationsModule,
+    DataTablesModule
   ],
   exports: [ChatAvatarComponent, ChatComponent, ChatInputComponent],
 })

@@ -20,7 +20,7 @@
   bottom: 20px;
   right: 40px;
   box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
-  background: #1976d2;
+  background: #17a2b8;
   border-radius: 50%;
   border: none;
   outline: none;
@@ -52,7 +52,7 @@
   flex-direction: column;
 
   box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
-  background: #1976d2;
+  background: #17a2b8;
 }
 .chat-box-hidden {
   display: none;
@@ -204,10 +204,10 @@ Sent message style
 
 
 .blue .chat-button {
-  background: #1976d2;
+  background: #17a2b8;
 }
 .blue .chat-box {
-  background: #1976d2;
+  background: #17a2b8;
 }
 
 .grey .chat-button {

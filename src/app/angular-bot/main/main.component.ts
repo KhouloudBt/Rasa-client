@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-declare var jQuery: any;
+
 
 
 @Component({
@@ -9,12 +9,7 @@ declare var jQuery: any;
 })
 export class MainComponent implements OnInit {
 
-  constructor() { }
+  dtOptions: any = {};
 
-  ngOnInit() {
-  //   $(document).ready(function() {
-  //     $('#example').DataTable();
-  // } );
-  }
-
+  ngOnInit(): void {}
 }

@@ -4,6 +4,8 @@ import { MainComponent} from './angular-bot/main/main.component';
 import { ChatComponent} from './angular-bot/chat/chat.component';
 import {AddSynonymsComponent} from './add-synonyms/add-synonyms.component';
 import {SwitchComponent} from './switch/switch.component';
+
+
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'main'},
   {path: 'main', component: MainComponent},

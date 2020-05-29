@@ -1,13 +1,40 @@
 <fieldset class="border p-2">
   <legend class="w-auto">Add synonyms to database fields:</legend>
-  <div class="container">
-    <div class="row justify-content-center">
-<div class="col">
-  <button type="button" class="btn btn-dark">Add a file</button></div>
-  <div class="col"><button type="button" class="btn btn-dark">Enter synonyms in textarea</button>
-</div>
-</div>
-<div class="row">
-  <button type="button" class="btn btn-info button1">Submit</button></div>
-</div>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="form-group row">
+        <div class="form-group col">
+            <label>Please choose a field</label>
+            <select formControlName="field" class="custom-select form-control" [id]="validationTooltip04" [ngClass]="{ 'is-invalid': submitted && f.field.errors }">
+              <div *ngFor= "let item of data |keyvalue">
+                <optgroup label={{item.key}}>
+                  <div *ngFor="let item1 of item.value" >
+                    <option value={{item1}}> {{item1}</option>
+                  </div>
+                 </div>
+            </select>
+            <div *ngIf="submitted && f.field.errors" class="invalid-feedback">
+                <div *ngIf="f.field.errors.required">Field is required</div>
+            </div>
+        </div>
+      </div>
+        <div class="form-group row">
+          <div class="bouton">
+            <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile">Add a file</button></div>
+            <div class="col">
+              <button type="button" class="btn btn-dark">Enter synonyms in textarea</button>
+          </div>
+        </div>
+
+          .<div formControl="addFile" class="custom-file collapse fichier" id="addFile">
+            <input type="file" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+          </div>
+
+    <div class="center-text">
+      <button type="submit" class="btn btn-info button1">Submit</button>
+      <button class="btn btn-secondary button2" type="reset" (click)="onReset()">Cancel</button></div>
+
+</form>
 </fieldset>
+
+

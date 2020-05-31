@@ -1,32 +1,49 @@
 <fieldset class="border p-2">
   <legend class="w-auto">Add synonyms to database fields:</legend>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="FieldsForm" (ngSubmit)="onSubmit()">
     <div class="form-group row">
         <div class="form-group col">
-            <label>Please choose a field</label>
-            <select formControlName="field" class="custom-select form-control" [id]="validationTooltip04" [ngClass]="{ 'is-invalid': submitted && f.field.errors }">
-              <div *ngFor= "let item of data |keyvalue">
+            <label for="fieldTable">Please choose a table</label>
+            <select formControlName="fieldTable" class="custom-select form-control" required [ngClass]="{ 'is-invalid': submitted && f.fieldTable.errors }">
+              <!-- <div *ngFor= "let item of data |keyvalue">
                 <optgroup label={{item.key}}>
                   <div *ngFor="let item1 of item.value" >
                     <option value={{item1}}> {{item1}</option>
                   </div>
-                 </div>
+                 </div> -->
+            </select>
+        </div>
+    </div>
+        <div class="form-group row">
+          <div class="form-group col">
+
+
+            <label for="fieldTable">Please choose a column</label>
+
+            <select formControlName="fieldColumn" class="custom-select form-control">
+              <!-- <div *ngFor= "let item of data |keyvalue">
+                <optgroup label={{item.key}}>
+                  <div *ngFor="let item1 of item.value" >
+                    <option value={{item1}}> {{item1}</option>
+                  </div>
+                 </div> -->
             </select>
             <div *ngIf="submitted && f.field.errors" class="invalid-feedback">
-                <div *ngIf="f.field.errors.required">Field is required</div>
+                <div *ngIf="f.field.errors.required">You should select at least one field</div>
             </div>
         </div>
       </div>
         <div class="form-group row">
           <div class="bouton">
-            <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile">Add a file</button></div>
+            <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile">Add a file</button>
+          </div>
             <div class="col">
               <button type="button" class="btn btn-dark">Enter synonyms in textarea</button>
           </div>
         </div>
 
-          .<div formControl="addFile" class="custom-file collapse fichier" id="addFile">
-            <input type="file" class="custom-file-input" id="customFile">
+          .<div  class="custom-file collapse fichier" id="addFile">
+            <input formControlName="addFile" type="file" class="custom-file-input" id="customFile">
             <label class="custom-file-label" for="customFile">Choose file</label>
           </div>
 

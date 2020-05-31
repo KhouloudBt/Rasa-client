@@ -33,8 +33,8 @@
 </ng-container>
 </div>
 <div class="chat-box-footer">
-  <textarea type="text" class="chat-input-text" placeholder="Type message..."
-  [(ngModel)]="valeur" (keydown.enter)="sendMessage()" (dismiss)="toggleChat()" (keyup.enter)="message.value = ''" ></textarea>
+  <textarea  type="text" class="chat-input-text" placeholder="Type message..."
+  [(ngModel)]="valeur" (keydown.enter)="sendMessage()" (dismiss)="toggleChat()" ></textarea>
 <button type="submit" class="chat-input-submit" (click)="sendMessage()">
 {{buttonText}}
 </button>

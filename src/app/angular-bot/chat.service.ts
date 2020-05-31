@@ -20,27 +20,49 @@ export class ChatService {
   }
   url = 'http://localhost:5005/webhooks/rest/webhook';
   urlIntent = 'http://localhost:5005/conversations/default/trigger_intent';
+  urlAction= "http://localhost:5005/conversations/default/execute"
+
   conversation = new Subject<Message[]>();
 
 
   // http://localhost:5005/conversations/{conversation_id}/trigger_intent
 
 
-  async connectToDatabase(username: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
+  async connectToDatabase(dbusername: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
    const dataToSend = JSON.stringify( {
-  'name': 'connect_to_databse',
-  'entities': {
-  'dbusername': username,
-  'password': password,
-  'dbhost': dbhost,
-  'dbdriver': dbdriver,
-  'dbdialect': dbdialect,
-  'dbname': dbname
-  }
+  'name': 'action_connect_to_database',
+
+  'entities':
+    [
+      {
+          "entity": "dbusername",
+          "value": dbusername
+      },
+      {
+          "entity": "dbpassword",
+          "value": password
+      },
+      {
+          "entity": "dbhost",
+          "value": dbhost
+      },
+      {
+          "entity": "dbdriver",
+          "value": dbdriver
+      },
+      {
+          "entity": "dbdialect",
+          "value": dbdialect
+      },
+      {
+          "entity": "dbname",
+          "value": dbname
+      }
+  ]
 });
    let answer = 'I\'m having an issue';
    try {
-  await this.http.post<Response[]>(this.urlIntent, dataToSend).toPromise()
+  await this.http.post<Response[]>(this.urlAction, dataToSend).toPromise()
   .then( res => answer = res[0].text);
 } catch (err) {
   return ' I\'m having an issue';
@@ -49,19 +71,26 @@ export class ChatService {
 }
 
 
-getFields(fieldTable: string, fieldColumn: string, filepath: string): any {
-
+async getFields(){
+    // tslint:disable-next-line: variable-name
+    let dict_answer = {};
     const dataToSend = JSON.stringify( {
-      'name': 'get_fields',
-      'entities': {
-      'fieldTable': fieldTable,
-      'fieldColumn': fieldColumn,
-      'fielPath': filepath
-      }
-    });
+      // tslint:disable-next-line: quotemark
+      // tslint:disable-next-line: object-literal-key-quotes
+      "action_name": "action_get_fields",
+     });
 
-
-    return this.http.post<any>(this.urlIntent, dataToSend).toPromise();
+    try {
+     await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
+      // tslint:disable-next-line: no-string-literal
+      res => dict_answer = res['messages'][0]['cusotm']);
+     console.log( typeof dict_answer);
+     console.log(dict_answer);
+    } catch (err) {
+      // tslint:disable-next-line: quotemark
+      return " error while getting fields";
+    }
+    return dict_answer;
   }
 
 

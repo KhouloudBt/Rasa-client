@@ -1,6 +1,6 @@
 import { ChatService } from './../angular-bot/chat.service';
-import { Component, OnInit } from '@angular/core';
-import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
+import {  FormGroup, FormControl } from '@angular/forms';
 
 
 @Component({
@@ -8,39 +8,46 @@ import {  FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './add-synonyms.component.html',
   styleUrls: ['./add-synonyms.component.css']
 })
+
+
 export class AddSynonymsComponent implements OnInit {
-  registerForm: FormGroup;
-  validationTooltip04 = 'validationTooltip04';
   submitted = false;
   data: any;
-  fieldTable: string;
-  fieldColumn: string;
-  filePath: string;
-  selectField = 'choose';
-
-  constructor(private formBuilder: FormBuilder, public chatService: ChatService) { }
-
-  ngOnInit() {
-    this.registerForm = this.formBuilder.group({
-      field: ['', Validators.required],
-      addFile : [Validators.required],
-      acceptTerms: [false, Validators.requiredTrue]
+  FieldsForm = new FormGroup({
+    fieldTable : new FormControl('choose table'),
+    fieldColumn: new FormControl('choose column'),
+    addFile: new FormControl(''),
   });
 
-    this.data = JSON.parse(this.chatService.getFields(this.fieldTable, this.fieldColumn, this.filePath));
+  selectField = 'choose';
+  // seperate = new FillDict();
+  // seperate.fill['tables']=[];
+
+
+
+  // seperate["tables"] = [];
+  // seperate["columns"]=[];
+
+
+  constructor( public chatService: ChatService) { }
+
+  ngOnInit() {
+    this.data = this.chatService.getFields();
+    console.log(this.data);
   }
-  get f() { return this.registerForm.controls; }
+  get f() { return this.FieldsForm.controls; }
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.registerForm.invalid) {
+    if (this.FieldsForm.invalid) {
         return;
     }
-    // display form values on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));  }
+    // // display form values on success
+    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+  }
   onReset() {
     this.submitted = false;
-    this.registerForm.reset();
+    this.FieldsForm.reset();
   }
 
 }

@@ -14,8 +14,10 @@ export class ChatComponent implements OnInit {
   @Input() public buttonText = '↩︎';
   @Input() public theme: 'blue' | 'grey' | 'red' = 'blue';
   @Input() public botName = 'Bot';
-  @Input() public botAvatar = 'https://cdn.dribbble.com/users/275794/screenshots/3128598/gbot_800.png';
-  @Input() public userAvatar = 'https://storage.proboards.com/6172192/images/gKhXFw_5W0SD4nwuMev1.png';
+  // 'https://cdn.dribbble.com/users/275794/screenshots/3128598/gbot_800.png'
+  @Input() public botAvatar = '../../../assets/Bot.png' ;
+  // 'https://storage.proboards.com/6172192/images/gKhXFw_5W0SD4nwuMev1.png'
+  @Input() public userAvatar = '../../../assets/user.png';
   // @Input() public startingMessage: string = 'Hi, how can we help you?'
   @Input() public opened  = true;
   // tslint:disable-next-line: variable-name
@@ -79,7 +81,7 @@ export class ChatComponent implements OnInit {
 
 
   }
- 
+
   public toggleChat() {
     this.visible = !this.visible;
   }

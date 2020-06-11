@@ -1,5 +1,5 @@
-import { ChatService } from './../angular-bot/chat.service';
-import { Component, OnInit} from '@angular/core';
+import { ChatService, Fields } from './../angular-bot/chat.service';
+import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {  FormGroup, FormControl } from '@angular/forms';
 
 
@@ -12,11 +12,17 @@ import {  FormGroup, FormControl } from '@angular/forms';
 
 export class AddSynonymsComponent implements OnInit {
   submitted = false;
-  data: any;
+  fields: Fields;
+  mixed: any;
+  seperate: any;
+  public columns: any;
+  public tables: any;
+  table: any;
+  column: any;
   FieldsForm = new FormGroup({
     fieldTable : new FormControl('choose table'),
     fieldColumn: new FormControl('choose column'),
-    addFile: new FormControl(''),
+    addFile: new FormControl(),
   });
 
   selectField = 'choose';
@@ -29,25 +35,43 @@ export class AddSynonymsComponent implements OnInit {
   // seperate["columns"]=[];
 
 
-  constructor( public chatService: ChatService) { }
+  constructor( public chatService: ChatService, private cd: ChangeDetectorRef) { }
 
-  ngOnInit() {
-    this.data = this.chatService.getFields();
-    console.log(this.data);
+  async ngOnInit() {
+    this.fields = await this.chatService.getFields();
+    this.mixed = this.fields.mixed;
+    this.tables = this.fields.tables;
+    console.log(this.tables);
+    console.log(this.columns);
+    this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x]);
+    // this.ChangeSelectTable();
+
   }
+
   get f() { return this.FieldsForm.controls; }
   onSubmit() {
     this.submitted = true;
     // stop here if form is invalid
-    if (this.FieldsForm.invalid) {
-        return;
-    }
+    // if (this.FieldsForm.invalid) {
+    //     return;
+    // }
     // // display form values on success
     // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+    console.log(this.FieldsForm.value);
   }
   onReset() {
     this.submitted = false;
     this.FieldsForm.reset();
   }
+  onFileChange(event) {
 
-}
+    if (event.target.files.length > 0)
+    {
+      const file = event.target.files[0];
+      this.FieldsForm.get('addFile').setValue(file, {emitModelToViewChange: true});
+    }
+      }
+    }
+
+
+

@@ -9,6 +9,14 @@ export class Message {
 
   }
 }
+export class Fields{
+  mixed: any;
+  tables: any;
+  columns: any;
+  public constructor(init?: Partial<Fields>) {
+    Object.assign(this, init);
+}
+}
 interface Response {
   recipient_id: string;
   text: string;
@@ -20,7 +28,7 @@ export class ChatService {
   }
   url = 'http://localhost:5005/webhooks/rest/webhook';
   urlIntent = 'http://localhost:5005/conversations/default/trigger_intent';
-  urlAction= "http://localhost:5005/conversations/default/execute"
+  urlAction = "http://localhost:5005/conversations/default/execute"
 
   conversation = new Subject<Message[]>();
 
@@ -30,9 +38,9 @@ export class ChatService {
 
   async connectToDatabase(dbusername: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
    const dataToSend = JSON.stringify( {
-  'name': 'action_connect_to_database',
+  "name": "action_connect_db",
 
-  'entities':
+  "entities":
     [
       {
           "entity": "dbusername",
@@ -71,26 +79,26 @@ export class ChatService {
 }
 
 
-async getFields(){
+async getFields(): Promise<Fields> {
     // tslint:disable-next-line: variable-name
-    let dict_answer = {};
     const dataToSend = JSON.stringify( {
-      // tslint:disable-next-line: quotemark
-      // tslint:disable-next-line: object-literal-key-quotes
-      "action_name": "action_get_fields",
+
+      "name": "action_get_fields",
      });
 
-    try {
+     let fields: Fields = {
+       mixed : null,
+       tables: null,
+       columns : null
+     };
+
      await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
-      // tslint:disable-next-line: no-string-literal
-      res => dict_answer = res['messages'][0]['cusotm']);
-     console.log( typeof dict_answer);
-     console.log(dict_answer);
-    } catch (err) {
+      res => { fields = new Fields ({ mixed: res['messages'][0]['custom']['mixed'],tables: res['messages'][0]['custom']['seperate']['tables'],
+     columns: res['messages'][0]['custom']['seperate']['columns']}); });
+
+
       // tslint:disable-next-line: quotemark
-      return " error while getting fields";
-    }
-    return dict_answer;
+    return fields;
   }
 
 

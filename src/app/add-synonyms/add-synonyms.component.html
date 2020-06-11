@@ -4,13 +4,9 @@
     <div class="form-group row">
         <div class="form-group col">
             <label for="fieldTable">Please choose a table</label>
-            <select formControlName="fieldTable" class="custom-select form-control" required [ngClass]="{ 'is-invalid': submitted && f.fieldTable.errors }">
-              <!-- <div *ngFor= "let item of data |keyvalue">
-                <optgroup label={{item.key}}>
-                  <div *ngFor="let item1 of item.value" >
-                    <option value={{item1}}> {{item1}</option>
-                  </div>
-                 </div> -->
+            <select formControlName="fieldTable" id="fieldTable" class="custom-select form-control" required [ngClass]="{ 'is-invalid': submitted && f.fieldTable.errors }">
+               <option *ngFor= "let table of tables" [value]="table">{{table}}</option>
+
             </select>
         </div>
     </div>
@@ -20,13 +16,8 @@
 
             <label for="fieldTable">Please choose a column</label>
 
-            <select formControlName="fieldColumn" class="custom-select form-control">
-              <!-- <div *ngFor= "let item of data |keyvalue">
-                <optgroup label={{item.key}}>
-                  <div *ngFor="let item1 of item.value" >
-                    <option value={{item1}}> {{item1}</option>
-                  </div>
-                 </div> -->
+            <select formControlName="fieldColumn" id="fieldColumn" class="custom-select form-control">
+                <option *ngFor= "let column of columns" [value]="column"> {{column}}</option>
             </select>
             <div *ngIf="submitted && f.field.errors" class="invalid-feedback">
                 <div *ngIf="f.field.errors.required">You should select at least one field</div>
@@ -43,7 +34,7 @@
         </div>
 
           .<div  class="custom-file collapse fichier" id="addFile">
-            <input formControlName="addFile" type="file" class="custom-file-input" id="customFile">
+            <input  formControlName="addFile" (change)="onFileChange($event)" type="file" class="custom-file-input form-control-file" id="customFile">
             <label class="custom-file-label" for="customFile">Choose file</label>
           </div>
 

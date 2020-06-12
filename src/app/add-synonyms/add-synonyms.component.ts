@@ -13,6 +13,7 @@ import {  FormGroup, FormControl } from '@angular/forms';
 export class AddSynonymsComponent implements OnInit {
   submitted = false;
   fields: Fields;
+  fielPath: any;
   mixed: any;
   seperate: any;
   public columns: any;
@@ -25,7 +26,6 @@ export class AddSynonymsComponent implements OnInit {
     addFile: new FormControl(),
   });
 
-  selectField = 'choose';
   // seperate = new FillDict();
   // seperate.fill['tables']=[];
 
@@ -49,8 +49,13 @@ export class AddSynonymsComponent implements OnInit {
   }
 
   get f() { return this.FieldsForm.controls; }
-  onSubmit() {
+  async onSubmit() {
     this.submitted = true;
+    // const filePath = this.FieldsForm.get('filePath').value;
+    const fieldColumn = this.FieldsForm.get('fieldColumn').value;
+    const fieldTable = this.FieldsForm.get('fieldTable').value;
+    const alert = await this.chatService.addSynonyms(this.fielPath, fieldTable, fieldColumn);
+    console.log(alert);
     // stop here if form is invalid
     // if (this.FieldsForm.invalid) {
     //     return;
@@ -67,8 +72,8 @@ export class AddSynonymsComponent implements OnInit {
 
     if (event.target.files.length > 0)
     {
-      const file = event.target.files[0];
-      this.FieldsForm.get('addFile').setValue(file, {emitModelToViewChange: true});
+      this.fielPath = event.target.files[0];
+      // this.FieldsForm.get('addFile').setValue(this.fielPath, {emitModelToViewChange: true});
     }
       }
     }

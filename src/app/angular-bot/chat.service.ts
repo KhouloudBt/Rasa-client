@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  Subject} from 'rxjs';
+import { Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 
 
@@ -28,7 +28,7 @@ export class ChatService {
   }
   url = 'http://localhost:5005/webhooks/rest/webhook';
   urlIntent = 'http://localhost:5005/conversations/default/trigger_intent';
-  urlAction = "http://localhost:5005/conversations/default/execute"
+  urlAction = 'http://localhost:5005/conversations/default/execute';
 
   conversation = new Subject<Message[]>();
 
@@ -36,6 +36,36 @@ export class ChatService {
   // http://localhost:5005/conversations/{conversation_id}/trigger_intent
 
 
+
+  async addSynonyms(filePath: any, fieldTable: any, fieldColumn: any) {
+
+    const dataToSend = JSON.stringify( {
+      "name": "action_add_synonyms",
+
+      "entities":
+        [
+          {
+              "entity": "filePath",
+              "value": filePath
+          },
+          {
+              "entity": "fieldTable",
+              "value": fieldTable
+          },
+          {
+              "entity": "fieldColumn",
+              "value": fieldColumn
+          }]});
+    let answer = 'I\'m having an issue';
+    try {
+         await this.http.post<Response>(this.urlAction, dataToSend).toPromise()
+         .then( res => answer = res[0].text);
+       } catch (err) {
+         return ' Error while adding synonyms';
+       }
+    return answer;
+
+  }
   async connectToDatabase(dbusername: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
    const dataToSend = JSON.stringify( {
   "name": "action_connect_db",
@@ -86,13 +116,13 @@ async getFields(): Promise<Fields> {
       "name": "action_get_fields",
      });
 
-     let fields: Fields = {
+    let fields: Fields = {
        mixed : null,
        tables: null,
        columns : null
      };
 
-     await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
+    await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
       res => { fields = new Fields ({ mixed: res['messages'][0]['custom']['mixed'],tables: res['messages'][0]['custom']['seperate']['tables'],
      columns: res['messages'][0]['custom']['seperate']['columns']}); });
 

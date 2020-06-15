@@ -41,7 +41,6 @@ export class ChatService {
 
   async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any) {
 
-
     const dataAction = JSON.stringify( {
       "name": "add_synonyms",
       "entities":
@@ -56,7 +55,7 @@ export class ChatService {
           },
           {
               "entity": "synonyms_list",
-              "value": ["hi"]
+              "value": ["hi","hello","how are you"]
           }
       ]});
       // answer = res[0].text)
@@ -72,7 +71,7 @@ export class ChatService {
   }
   async connectToDatabase(dbusername: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
    const dataToSend = JSON.stringify( {
-  "name": "action_connect_db",
+  "name": "connect_to_database",
 
   "entities":
     [
@@ -102,13 +101,14 @@ export class ChatService {
       }
   ]
 });
+// await this.http.post<Response[]>(this.urlIntent, dataToSend).toPromise()
+// .then( res => answer = res[0].text);
    let answer = 'I\'m having an issue';
    try {
-  await this.http.post<Response[]>(this.urlAction, dataToSend).toPromise()
-  .then( res => answer = res[0].text);
+  await this.http.post<any>(this.urlIntent, dataToSend).toPromise()
+  .then( res => console.log(res));
 } catch (err) {
-  return ' I\'m having an issue';
-}
+  return ' I\'m having an issue';}
    return answer;
 }
 

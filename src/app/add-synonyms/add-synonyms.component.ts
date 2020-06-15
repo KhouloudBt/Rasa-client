@@ -42,8 +42,7 @@ export class AddSynonymsComponent implements OnInit {
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
-    console.log(this.tables);
-    console.log(this.columns);
+
     this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x]);
     // this.ChangeSelectTable();
 
@@ -54,7 +53,8 @@ export class AddSynonymsComponent implements OnInit {
     const fileReader = new FileReader();
     fileReader.onload = (e) => {
     let syn = fileReader.result.toString().split('\n');
-    console.log(syn[2]);
+    console.log(fileReader.result.toString().split('\n'));
+    console.log(syn);
     let i = 0;
     for (const st in syn) {
         this.fileinput[i]=st;
@@ -68,7 +68,7 @@ export class AddSynonymsComponent implements OnInit {
     const column = this.FieldsForm.get('fieldColumn').value;
     const table = this.FieldsForm.get('fieldTable').value;
     this.uploadDocument(this.filePath);
-    console.log(this.fileinput)
+    console.log("fileinput", this.fileinput);
     const alert = await this.chatService.addSynonyms(this.fileinput, table, column);
     console.log(alert);
     // stop here if form is invalid

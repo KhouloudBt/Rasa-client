@@ -1,0 +1,21 @@
+.f{
+  margin-top: 100px;
+  border: 10px;
+  width: fit-content;
+  border-radius: 20px;
+  border-color: black;
+  border-width: 20px;
+}
+  fieldset {
+    background-color: #eeeeee;
+    margin-top: 100px;
+    margin-left: 100px;
+    margin-block-end: auto;
+    margin-right: 150px;
+  }
+
+  legend {
+    background-color: gray;
+    color: white;
+    padding: 5px 10px;
+  }

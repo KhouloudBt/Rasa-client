@@ -16,12 +16,6 @@ export class SwitchComponent implements OnInit {
   dbdriver: FormControl;
   dbdialect: FormControl;
   dbhost: FormControl;
-
-
-
-
-
-
   constructor( private chatSerivce: ChatService, private formBuilder: FormBuilder) {
 
     this.dbusername = new FormControl('', [Validators.required]);
@@ -42,23 +36,23 @@ export class SwitchComponent implements OnInit {
   }
 
 
-
-  ngOnInit() {
-  }
-
-  public OnSubmit() {
+  async onSubmit() {
     this.dbusername = this.f.get('dbusername').value;
     this.dbname = this.f.get('dbname').value;
     this.dbpassword = this.f.get('dbpassword').value;
     this.dbdriver = this.f.get('dbdriver').value;
     this.dbdialect = this.f.get('dbdialect').value;
     this.dbhost = this.f.get('dbhost').value;
-    const answer = this.chatSerivce.connectToDatabase(this.dbusername, this.dbpassword,
+    const answer = await this.chatSerivce.connectToDatabase(this.dbusername, this.dbpassword,
        this.dbname, this.dbhost, this.dbdriver, this.dbdialect);
     console.log(answer);
 
 
 
   }
+  ngOnInit() {
+  }
+
+
   }
 

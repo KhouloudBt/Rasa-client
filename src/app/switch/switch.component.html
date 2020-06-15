@@ -1,18 +1,35 @@
-<form [formGroup]="f" onsubmit="OnSubmit()">
+<fieldset class="border p-2">
+  <legend class="w-auto">Add synonyms to database fields:</legend>
+<form [formGroup]="f" (ngSubmit)="onSubmit()">
   <div class="form-group">
+    <div class="form-group row">
+
 <label for ="username"> Username</label>
 <input #username type ="text" required placeholder="exp:root" formControlName="dbusername" class="form-control">
+</div>
+<div class="form-group row">
 <label for ="dbname"> Password</label>
 <input #dbpassword type ="password" required placeholder="your password" formControlName="dbpassword" class="form-control">
+</div>
+<div class="form-group row">
 <label for ="dbname"> Database name</label>
 <input #dbname type ="text" required placeholder="exp:wevioo_db" formControlName="dbname" class="form-control">
+</div>
+<div class="form-group row">
 <label for ="dbhost"> Host</label>
 <input #dbhost type ="text" required placeholder="exp:localhost" formControlName="dbhost" class="form-control">
+</div>
+<div class="form-group row">
 <label for ="dbdriver"> Driver</label>
 <input #dbdriver type ="text" required placeholder="exp:mysql" formControlName="dbdriver" class="form-control">
+</div>
+<div class="form-group row">
 <label for ="dbdialect"> Dialect</label>
 <input #dbdialect type ="text" required placeholder="exp:pymysql" formControlName="dbdialect" class="form-control">
-<button type="submit" class="btn btn-primary">Submit</button>
+</div>
+<input type="submit" class="btn btn-primary" value="Submit">
 </div>
 </form>
+</fieldset>
+
 

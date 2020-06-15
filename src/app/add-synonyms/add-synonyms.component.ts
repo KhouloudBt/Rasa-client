@@ -13,11 +13,12 @@ import {  FormGroup, FormControl } from '@angular/forms';
 export class AddSynonymsComponent implements OnInit {
   submitted = false;
   fields: Fields;
-  fielPath: any;
+  filePath: any;
   mixed: any;
   seperate: any;
   public columns: any;
   public tables: any;
+  fileinput: Array<string>;
   table: any;
   column: any;
   FieldsForm = new FormGroup({
@@ -49,12 +50,26 @@ export class AddSynonymsComponent implements OnInit {
   }
 
   get f() { return this.FieldsForm.controls; }
+  uploadDocument(file: any) {
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+    let syn = fileReader.result.toString().split('\n');
+    console.log(syn[2]);
+    let i = 0;
+    for (const st in syn) {
+        this.fileinput[i]=st;
+        i=i+1;
+    };
+    fileReader.readAsText(file);
+}
+}
   async onSubmit() {
     this.submitted = true;
-    // const filePath = this.FieldsForm.get('filePath').value;
-    const fieldColumn = this.FieldsForm.get('fieldColumn').value;
-    const fieldTable = this.FieldsForm.get('fieldTable').value;
-    const alert = await this.chatService.addSynonyms(this.fielPath, fieldTable, fieldColumn);
+    const column = this.FieldsForm.get('fieldColumn').value;
+    const table = this.FieldsForm.get('fieldTable').value;
+    this.uploadDocument(this.filePath);
+    console.log(this.fileinput)
+    const alert = await this.chatService.addSynonyms(this.fileinput, table, column);
     console.log(alert);
     // stop here if form is invalid
     // if (this.FieldsForm.invalid) {
@@ -70,13 +85,12 @@ export class AddSynonymsComponent implements OnInit {
   }
   onFileChange(event) {
 
-    if (event.target.files.length > 0)
-    {
-      this.fielPath = event.target.files[0];
-      // this.FieldsForm.get('addFile').setValue(this.fielPath, {emitModelToViewChange: true});
+    if (event.target.files.length > 0) {
+      this.filePath = event.target.files[0];
     }
       }
     }
+
 
 
 

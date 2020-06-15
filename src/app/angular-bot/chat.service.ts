@@ -21,6 +21,13 @@ interface Response {
   recipient_id: string;
   text: string;
 }
+export class Objet{
+  text: string;
+}
+interface ResponseAction{
+  events: Array<Object>;
+  responses: Array<Objet>;
+}
 
 @Injectable()
 export class ChatService {
@@ -29,25 +36,16 @@ export class ChatService {
   url = 'http://localhost:5005/webhooks/rest/webhook';
   urlIntent = 'http://localhost:5005/conversations/default/trigger_intent';
   urlAction = 'http://localhost:5005/conversations/default/execute';
-
+  urlSlot = ' http://localhost:5005/conversations/default/tracker/events';
   conversation = new Subject<Message[]>();
 
-
-  // http://localhost:5005/conversations/{conversation_id}/trigger_intent
-
+  async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any) {
 
 
-  async addSynonyms(filePath: any, fieldTable: any, fieldColumn: any) {
-
-    const dataToSend = JSON.stringify( {
-      "name": "action_add_synonyms",
-
+    const dataAction = JSON.stringify( {
+      "name": "add_synonyms",
       "entities":
         [
-          {
-              "entity": "filePath",
-              "value": filePath
-          },
           {
               "entity": "fieldTable",
               "value": fieldTable
@@ -55,13 +53,19 @@ export class ChatService {
           {
               "entity": "fieldColumn",
               "value": fieldColumn
-          }]});
-    let answer = 'I\'m having an issue';
+          },
+          {
+              "entity": "synonyms_list",
+              "value": ["hi"]
+          }
+      ]});
+      // answer = res[0].text)
+    let answer = 'synonyms added successfully !';
     try {
-         await this.http.post<Response>(this.urlAction, dataToSend).toPromise()
-         .then( res => answer = res[0].text);
+         await this.http.post<any>(this.urlIntent, dataAction).toPromise()
+         .then( res => console.log(res)) ;
        } catch (err) {
-         return ' Error while adding synonyms';
+         answer = 'Error while adding synonyms';
        }
     return answer;
 
@@ -125,8 +129,6 @@ async getFields(): Promise<Fields> {
     await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
       res => { fields = new Fields ({ mixed: res['messages'][0]['custom']['mixed'],tables: res['messages'][0]['custom']['seperate']['tables'],
      columns: res['messages'][0]['custom']['seperate']['columns']}); });
-
-
       // tslint:disable-next-line: quotemark
     return fields;
   }

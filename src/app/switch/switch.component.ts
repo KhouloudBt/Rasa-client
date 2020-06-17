@@ -10,6 +10,7 @@ import { FormControl, FormGroup, FormBuilder, Validator, Validators, ReactiveFor
 })
 export class SwitchComponent implements OnInit {
   f: FormGroup;
+  submitted: Boolean;
   dbusername: FormControl;
   dbpassword: FormControl ;
   dbname: FormControl;
@@ -24,6 +25,7 @@ export class SwitchComponent implements OnInit {
     this.dbdialect = new FormControl('', [Validators.required]);
     this.dbhost = new FormControl('', [Validators.required]);
     this.dbdriver = new FormControl('', [Validators.required]);
+    this.submitted= false;
     this.f = formBuilder.group({
     dbusername: this.dbusername,
     dbdialect: this.dbdialect,
@@ -43,6 +45,7 @@ export class SwitchComponent implements OnInit {
     this.dbdriver = this.f.get('dbdriver').value;
     this.dbdialect = this.f.get('dbdialect').value;
     this.dbhost = this.f.get('dbhost').value;
+    this.submitted=true
     const answer = await this.chatSerivce.connectToDatabase(this.dbusername, this.dbpassword,
        this.dbname, this.dbhost, this.dbdriver, this.dbdialect);
     console.log(answer);

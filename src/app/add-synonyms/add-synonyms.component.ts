@@ -1,6 +1,8 @@
 import { ChatService, Fields } from './../angular-bot/chat.service';
 import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {  FormGroup, FormControl } from '@angular/forms';
+import { ConditionalExpr } from '@angular/compiler';
+import { Callbacks } from 'jquery';
 
 
 @Component({
@@ -18,7 +20,7 @@ export class AddSynonymsComponent implements OnInit {
   seperate: any;
   public columns: any;
   public tables: any;
-  fileinput: Array<string>;
+  public fileinput: string [] = [];
   table: any;
   column: any;
   FieldsForm = new FormGroup({
@@ -49,36 +51,61 @@ export class AddSynonymsComponent implements OnInit {
   }
 
   get f() { return this.FieldsForm.controls; }
-  uploadDocument(file: any) {
-    const fileReader = new FileReader();
-    fileReader.onload = (e) => {
-    let syn = fileReader.result.toString().split('\n');
-    console.log(fileReader.result.toString().split('\n'));
-    console.log(syn);
-    let i = 0;
-    for (const st in syn) {
-        this.fileinput[i]=st;
-        i=i+1;
-    };
-    fileReader.readAsText(file);
-}
-}
-  async onSubmit() {
+
+//   uploadDocument(file: any) {
+//     const fileReader = new FileReader();
+//     fileReader.onload = (e) => {
+//       console.log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
+//       const syn = fileReader.result.toString().split('\n');
+//       console.log("result", fileReader.result);
+//       console.log(syn);
+//     //   let i = 0;
+//     // for (let st in syn) {
+//     //   console.log("syns",st)
+//     //     fileinput[i]=<string>st;
+//     //     i=i+1;
+//     // };
+//       fileReader.readAsText(file);
+// }
+// }
+   onSubmit() {
     this.submitted = true;
     const column = this.FieldsForm.get('fieldColumn').value;
     const table = this.FieldsForm.get('fieldTable').value;
-    this.uploadDocument(this.filePath);
-    console.log("fileinput", this.fileinput);
-    const alert = await this.chatService.addSynonyms(this.fileinput, table, column);
-    console.log(alert);
+    let answer = this.chatService.SendSynonyms(table, column);
+    // let reader = new FileReader();
+    //  reader.onload = (e)=> {
+    //     let list_syn =reader.result.toString().trim().split('\n');
+    //     for ( let el in list_syn) {
+    //       this.fileinput.push(list_syn[el]);
+    //       };     }
+    //  reader.readAsText(this.filePath);
+
+    // const fileReader = new FileReader();
+    // fileReader.onload = (e) => {
+    //   console.log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
+    //   const syn = fileReader.result.toString().split('\n');
+    //   console.log("result", fileReader.result);
+    //   console.log(syn);
+    // //   let i = 0;
+    // // for (let st in syn) {
+    // //   console.log("syns",st)
+    // //     fileinput[i]=<string>st;
+    // //     i=i+1;
+    // // };
+    //   fileReader.readAsText(this.filePath);
+
+    // this.uploadDocument(this.filePath);
+    // console.log("fileinput", this.fileinput);
+    // const alert = this.chatService.addSynonyms(this.fileinput, table, column);
     // stop here if form is invalid
     // if (this.FieldsForm.invalid) {
     //     return;
     // }
     // // display form values on success
     // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
-    console.log(this.FieldsForm.value);
   }
+
   onReset() {
     this.submitted = false;
     this.FieldsForm.reset();

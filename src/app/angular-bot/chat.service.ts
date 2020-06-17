@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import { syntaxError } from '@angular/compiler';
 
 
 
@@ -39,6 +40,65 @@ export class ChatService {
   urlSlot = ' http://localhost:5005/conversations/default/tracker/events';
   conversation = new Subject<Message[]>();
 
+
+
+
+
+  async SendSynonyms( fieldTable: any, fieldColumn: any) {
+
+    const dataAction = JSON.stringify( {
+      "name": "send_synonyms",
+      "entities":
+        [
+          {
+              "entity": "fieldTable",
+              "value": fieldTable
+          },
+          {
+              "entity": "fieldColumn",
+              "value": fieldColumn
+          },
+
+      ]});
+      // answer = res[0].text)
+      // answer = res['messages'][0]['text'];
+    let answer = 'synonyms recieved successfully !';
+    let syn_string='';
+    let synonyms=[];
+
+    try {
+         await this.http.post<any>(this.urlIntent, dataAction).toPromise()
+         .then( res => {
+           console.log(res);
+           console.log(res['messages'][0]);
+           syn_string = res['messages'][0]['custom'];
+           console.log(syn_string);
+           synonyms = this.list_from_string(syn_string);
+    }) ;
+       } catch (err) {
+         return'Error while adding synonyms';
+       }
+
+    return answer;
+
+  }
+
+  list_from_string( custom: string) : any{
+    let start=custom.indexOf("[")+1;
+    let end= custom.indexOf("]")
+    let inter = custom.substring(start,end);
+    const first =inter.split(",")
+    let list_syn= [];
+    for (let syn in first){
+      let startchar = syn.indexOf('"');
+      let endchar= syn.lastIndexOf('"');
+      list_syn      . syn.substring(startchar+1,endchar);
+    }
+    console.log("list_syn=", list_syn);
+
+    return list_syn;
+
+  }
   async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any) {
 
     const dataAction = JSON.stringify( {
@@ -55,14 +115,14 @@ export class ChatService {
           },
           {
               "entity": "synonyms_list",
-              "value": ["hi","hello","how are you"]
+              "value": synonyms
           }
       ]});
       // answer = res[0].text)
     let answer = 'synonyms added successfully !';
     try {
          await this.http.post<any>(this.urlIntent, dataAction).toPromise()
-         .then( res => console.log(res)) ;
+         .then( res =>{answer = res['messages'][0]['text'];console.log(answer);}) ;
        } catch (err) {
          answer = 'Error while adding synonyms';
        }
@@ -128,7 +188,8 @@ async getFields(): Promise<Fields> {
 
     await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
       res => { fields = new Fields ({ mixed: res['messages'][0]['custom']['mixed'],tables: res['messages'][0]['custom']['seperate']['tables'],
-     columns: res['messages'][0]['custom']['seperate']['columns']}); });
+     columns: res['messages'][0]['custom']['seperate']['columns']});
+    });
       // tslint:disable-next-line: quotemark
     return fields;
   }

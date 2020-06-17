@@ -5,27 +5,46 @@
     <div class="form-group row">
 
 <label for ="username"> Username</label>
-<input #username type ="text" required placeholder="exp:root" formControlName="dbusername" class="form-control">
+<input #username type ="text" required placeholder="exp:root" formControlName="dbusername" class="form-control"
+[ngClass]="{'is-invalid': dbusername.errors && submitted, 'is-valid':dbusername.valid}">
+<div class="invalid-feedback" >
+  <strong>Username required</strong>
+</div>
 </div>
 <div class="form-group row">
 <label for ="dbname"> Password</label>
-<input #dbpassword type ="password" required placeholder="your password" formControlName="dbpassword" class="form-control">
+<input #dbpassword type ="password" required placeholder="your password" formControlName="dbpassword" class="form-control"[ngClass]="{'is-invalid': dbpassword.errors && submitted, 'is-valid':dbpassword.valid}">
+<div class="invalid-feedback" >
+  <strong>password required</strong>
+</div>
 </div>
 <div class="form-group row">
 <label for ="dbname"> Database name</label>
-<input #dbname type ="text" required placeholder="exp:wevioo_db" formControlName="dbname" class="form-control">
+<input #dbname type ="text" required placeholder="exp:wevioo_db" formControlName="dbname" class="form-control"[ngClass]="{'is-invalid': dbname.errors && submitted, 'is-valid':dbname.valid}">
+<div class="invalid-feedback" >
+  <strong>database name required</strong>
+</div>
 </div>
 <div class="form-group row">
 <label for ="dbhost"> Host</label>
-<input #dbhost type ="text" required placeholder="exp:localhost" formControlName="dbhost" class="form-control">
+<input #dbhost type ="text" required placeholder="exp:localhost" formControlName="dbhost" class="form-control"[ngClass]="{'is-invalid': dbhost.errors && submitted, 'is-valid':dbhost.valid}">
+<div class="invalid-feedback" >
+  <strong> host required</strong>
+</div>
 </div>
 <div class="form-group row">
 <label for ="dbdriver"> Driver</label>
-<input #dbdriver type ="text" required placeholder="exp:mysql" formControlName="dbdriver" class="form-control">
+<input #dbdriver type ="text" required placeholder="exp:mysql" formControlName="dbdriver" class="form-control"[ngClass]="{'is-invalid': dbdriver.errors && submitted, 'is-valid':dbdriver.valid}">
+<div class="invalid-feedback" >
+  <strong> database driver required </strong>
+</div>
 </div>
 <div class="form-group row">
 <label for ="dbdialect"> Dialect</label>
-<input #dbdialect type ="text" required placeholder="exp:pymysql" formControlName="dbdialect" class="form-control">
+<input #dbdialect type ="text" required placeholder="exp:pymysql" formControlName="dbdialect" class="form-control"[ngClass]="{'is-invalid': dbdialect.errors && submitted, 'is-valid':dbdriver.valid}">
+<div class="invalid-feedback" >
+  <strong> database dialect required </strong>
+</div>
 </div>
 <input type="submit" class="btn btn-primary" value="Submit">
 </div>

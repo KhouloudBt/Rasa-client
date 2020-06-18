@@ -8,6 +8,8 @@ import { ChatAvatarComponent } from './chat-avatar/chat-avatar.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataTablesModule } from 'angular-datatables';
+// import { SendSynonymsComponent } from 'src/app/send-synonyms/send-synonyms.component';
+
 
 
 
@@ -20,7 +22,7 @@ import { DataTablesModule } from 'angular-datatables';
     CommonModule,
     FormsModule,
     BrowserAnimationsModule,
-    DataTablesModule
+    DataTablesModule,
   ],
   exports: [ChatAvatarComponent, ChatComponent, ChatInputComponent],
 })

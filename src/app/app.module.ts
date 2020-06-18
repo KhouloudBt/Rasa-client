@@ -12,6 +12,8 @@ import { AddSynonymsComponent } from './add-synonyms/add-synonyms.component';
 import { SwitchComponent } from './switch/switch.component';
 import { DataTablesModule } from 'angular-datatables';
 import { DataDisplayComponent } from './data-display/data-display.component';
+import { SendSynonymsComponent } from './send-synonyms/send-synonyms.component';
+
 
 
 
@@ -23,6 +25,7 @@ import { DataDisplayComponent } from './data-display/data-display.component';
     AddSynonymsComponent,
     SwitchComponent,
     DataDisplayComponent,
+    SendSynonymsComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,9 @@ import { DataDisplayComponent } from './data-display/data-display.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     DataTablesModule,
-    FormsModule
+    FormsModule,
+
+
 
 
   ],

@@ -17,6 +17,14 @@ export class Fields{
   public constructor(init?: Partial<Fields>) {
     Object.assign(this, init);
 }
+
+}
+export class Synonyms{
+  syn_list: any[];
+
+  public constructor(init?: Partial<Synonyms>) {
+    Object.assign(this, init);
+}
 }
 interface Response {
   recipient_id: string;
@@ -44,7 +52,7 @@ export class ChatService {
 
 
 
-  async SendSynonyms( fieldTable: any, fieldColumn: any) {
+  async SendSynonyms( fieldTable: any, fieldColumn: any): Promise<Synonyms> {
 
     const dataAction = JSON.stringify( {
       "name": "send_synonyms",
@@ -62,9 +70,9 @@ export class ChatService {
       ]});
       // answer = res[0].text)
       // answer = res['messages'][0]['text'];
-    let answer = 'synonyms recieved successfully !';
     let syn_string='';
     let synonyms=[];
+    let result=[];
 
     try {
          await this.http.post<any>(this.urlIntent, dataAction).toPromise()
@@ -74,12 +82,16 @@ export class ChatService {
            syn_string = res['messages'][0]['custom'];
            console.log(syn_string);
            synonyms = this.list_from_string(syn_string);
+           for (let syn in synonyms){
+             result.push((synonyms[syn].replace('"','').trim()));
+           }
     }) ;
        } catch (err) {
-         return'Error while adding synonyms';
+         console.log('Error while adding synonyms');
        }
+       const resultFinal= new Synonyms({syn_list:result});
 
-    return answer;
+    return resultFinal;
 
   }
 
@@ -90,16 +102,16 @@ export class ChatService {
     const first =inter.split(",")
     let list_syn= [];
     for (let syn in first){
-      let startchar = syn.indexOf('"');
-      let endchar= syn.lastIndexOf('"');
-      list_syn      . syn.substring(startchar+1,endchar);
-    }
+      const startchar = first[syn].indexOf('"');
+      let endchar= first[syn].lastIndexOf('"');
+      list_syn.push(first[syn].replace('"',''));
+   }
     console.log("list_syn=", list_syn);
 
     return list_syn;
 
   }
-  async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any) {
+  async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any, write_type : any) {
 
     const dataAction = JSON.stringify( {
       "name": "add_synonyms",
@@ -116,7 +128,11 @@ export class ChatService {
           {
               "entity": "synonyms_list",
               "value": synonyms
-          }
+          },
+          {
+            "entity": "write_type",
+            "value": write_type
+        }
       ]});
       // answer = res[0].text)
     let answer = 'synonyms added successfully !';

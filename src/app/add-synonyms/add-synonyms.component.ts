@@ -1,5 +1,5 @@
 import { ChatService, Fields } from './../angular-bot/chat.service';
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Output} from '@angular/core';
 import {  FormGroup, FormControl } from '@angular/forms';
 import { ConditionalExpr } from '@angular/compiler';
 import { Callbacks } from 'jquery';
@@ -13,6 +13,9 @@ import { Callbacks } from 'jquery';
 
 
 export class AddSynonymsComponent implements OnInit {
+  @Output() public send = false;
+  @Output() public table: any;
+  @Output() public column: any;
   submitted = false;
   fields: Fields;
   filePath: any;
@@ -21,8 +24,7 @@ export class AddSynonymsComponent implements OnInit {
   public columns: any;
   public tables: any;
   public fileinput: string [] = [];
-  table: any;
-  column: any;
+
   FieldsForm = new FormGroup({
     fieldTable : new FormControl('choose table'),
     fieldColumn: new FormControl('choose column'),
@@ -44,6 +46,8 @@ export class AddSynonymsComponent implements OnInit {
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
+    console.log(this.table);
+    console.log(this.column);
 
     this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x]);
     // this.ChangeSelectTable();
@@ -68,11 +72,22 @@ export class AddSynonymsComponent implements OnInit {
 //       fileReader.readAsText(file);
 // }
 // }
+public clicked()
+{
+  if ((this.FieldsForm.get('fieldColumn').value === undefined )&&( this.FieldsForm.get('fieldTable').value === undefined))
+   {
+     alert ("you shoud select a field");
+   }
+else{
+  console.log("hello");
+  this.send = true;
+console.log(this.send);}
+}
    onSubmit() {
     this.submitted = true;
-    const column = this.FieldsForm.get('fieldColumn').value;
-    const table = this.FieldsForm.get('fieldTable').value;
-    let answer = this.chatService.SendSynonyms(table, column);
+    this.column = this.FieldsForm.get('fieldColumn').value;
+    this.table = this.FieldsForm.get('fieldTable').value;
+    let synonyms_recieved = this.chatService.SendSynonyms(this.table, this.column);
     // let reader = new FileReader();
     //  reader.onload = (e)=> {
     //     let list_syn =reader.result.toString().trim().split('\n');

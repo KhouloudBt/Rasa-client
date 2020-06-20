@@ -20,7 +20,7 @@ export class AddSynonymsComponent implements OnInit {
   dataTable: any;
   dtOptions: any;
   tableData = [];
-  synonyms: Array<Synonym>;
+  synonyms: Synonym[] = [];
   // @ViewChild('dataTable', {static: true}) table: { nativeElement: any; };
   submitted = false;
   fields: Fields;
@@ -78,6 +78,17 @@ export class AddSynonymsComponent implements OnInit {
 //       fileReader.readAsText(file);
 // }
 // }
+public updateSyn(Event: Event, id: number){
+
+let value = event.target.
+}
+public addRow()
+{
+  const newSyn = new Synonym(((this.synonyms.length ) + 1 ), '');
+  this.synonyms.push( newSyn);
+  console.log("hello")
+
+}
 async clicked()
 {
   if ((this.FieldsForm.get('fieldColumn').value === undefined )&&( this.FieldsForm.get('fieldTable').value === undefined))
@@ -90,24 +101,10 @@ else{
 }
 }
 
-public Remove( id: number)
+public Remove( syn: Synonym)
 {
-  this.synonyms.splice(1, id);
-  console.log(this.synonyms);
-
+  this.synonyms = this.synonyms.filter(item => item.id !== syn.id);
 }
-// async getDataFromSource() {
-//   this.tableData = ((await this.chatService.SendSynonyms(this.tableField, this.columnField)).syn_list);
-//   this.dtOptions = {
-//       data: this.tableData,
-//       columns: [
-//         {title: 'synonyms', data: this.tableData}]
-//     };
-
-//     this.dataTable = $(this.table.nativeElement);
-//     this.dataTable.DataTable(this.dtOptions);
-//     console.log("hi");
-//   }
 
    onSubmit() {
     this.submitted = true;

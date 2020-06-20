@@ -23,8 +23,9 @@ export class Synonym{
  id: number;
  synonym: string;
 
-  public constructor(init?: Partial<Synonym>) {
-    Object.assign(this, init);
+  public constructor(id: number, synonym: string) {
+    this.id = id;
+    this.synonym = synonym;
 }
 }
 interface Response {
@@ -53,7 +54,7 @@ export class ChatService {
 
 
 
-  async SendSynonyms( fieldTable: any, fieldColumn: any): Promise<Array<Synonym>> {
+  async SendSynonyms( fieldTable: any, fieldColumn: any): Promise<Synonym[]> {
 
     const dataAction = JSON.stringify( {
       "name": "send_synonyms",
@@ -69,43 +70,41 @@ export class ChatService {
           },
 
       ]});
-      // answer = res[0].text)
-      // answer = res['messages'][0]['text'];
     let syn_string = '';
-    let synonyms: Array<string>;
+    let synonyms: string[] = [];
 
-    let result : Array<Synonym>;
+    let result: Synonym[] = [];
 
-    try {
-         await this.http.post<any>(this.urlIntent, dataAction).toPromise()
+
+    await this.http.post<any>(this.urlIntent, dataAction).toPromise()
          .then( res => {
            console.log(res);
            console.log(res['messages'][0]);
            syn_string = res['messages'][0]['custom'];
            synonyms = this.list_from_string(syn_string);
            // tslint:disable-next-line: forin
-           for (let syn in synonyms){
+           for (let syn in synonyms) {
              console.log(syn);
              console.log(synonyms[syn]);
-            result.push( new Synonym( {id: synonyms.indexOf(syn), synonym: (syn.replace('"', '').trim())}) );
+             let ObjctSyn = new Synonym(synonyms.indexOf(synonyms[syn]), (synonyms[syn].replace('"', '').trim()))  ;
+             result.splice(result.length, 0, ObjctSyn);
            }
     }) ;
-       } catch (err) {
-         console.log('Error while adding synonyms'+ <string>(err));
-       }
+
 
     return result;
 
   }
 
-  list_from_string( custom: string): Array<string> {
+  list_from_string( custom: string): string[] {
     let start = custom.indexOf("[") + 1;
     let end = custom.indexOf("]")
     let inter = custom.substring(start, end);
     const first = inter.split(",")
-    let list_syn : Array<string>;
+    let list_syn : string[] = [];
+    // tslint:disable-next-line: forin
     for (let syn in first){
-      list_syn.push(first[syn].replace('"', ''));
+      list_syn.splice(list_syn.length, 0, first[syn].replace('"', ''));
    }
     console.log("list_syn=", list_syn);
 

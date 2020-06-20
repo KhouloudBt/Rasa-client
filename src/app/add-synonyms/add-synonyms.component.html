@@ -41,17 +41,23 @@
           <div class="collapse" id="sendSynonyms" data-parent=#collapse>
             <table #dataTable class="content-table table table-sm  table-hover" style="width:100%">
               <thead>
-                <tr >
-                  <th>ID</th>
+
+                <tr>
+                  <th><button class="circle" (click)= "addRow()">
+                    <div class="line-wrapper">
+                      <div class="horizontal"></div>
+                      <div class="vertical" ></div>
+                    </div>
+                  </button></th>
                   <th>Synonym</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let syn of synonyms | async" [attr.id]="syn.id">
+                <tr *ngFor="let syn of synonyms ">
                   <td>{{syn.id}}</td>
-                  <td>{{syn.synonym}}</td>
-                  <td><button type="button" class="btn btn-danger" (click)="Remove(syn.id)">Remove</button>
+                  <td contenteditable (keydown.enter)="updateSyn($event, syn.id)" >{{syn.synonym}}</td>
+                  <td><button type="button" class="btn btn-danger" (click)="Remove(syn)">Remove</button>
                   </td>
                 </tr>
                 </tbody>

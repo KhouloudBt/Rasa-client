@@ -19,10 +19,11 @@ export class Fields{
 }
 
 }
-export class Synonyms{
-  syn_list: any[];
+export class Synonym{
+ id: number;
+ synonym: string;
 
-  public constructor(init?: Partial<Synonyms>) {
+  public constructor(init?: Partial<Synonym>) {
     Object.assign(this, init);
 }
 }
@@ -52,7 +53,7 @@ export class ChatService {
 
 
 
-  async SendSynonyms( fieldTable: any, fieldColumn: any): Promise<Synonyms> {
+  async SendSynonyms( fieldTable: any, fieldColumn: any): Promise<Array<Synonym>> {
 
     const dataAction = JSON.stringify( {
       "name": "send_synonyms",
@@ -70,9 +71,10 @@ export class ChatService {
       ]});
       // answer = res[0].text)
       // answer = res['messages'][0]['text'];
-    let syn_string='';
-    let synonyms=[];
-    let result=[];
+    let syn_string = '';
+    let synonyms: Array<string>;
+
+    let result : Array<Synonym>;
 
     try {
          await this.http.post<any>(this.urlIntent, dataAction).toPromise()
@@ -80,31 +82,30 @@ export class ChatService {
            console.log(res);
            console.log(res['messages'][0]);
            syn_string = res['messages'][0]['custom'];
-           console.log(syn_string);
            synonyms = this.list_from_string(syn_string);
+           // tslint:disable-next-line: forin
            for (let syn in synonyms){
-             result.push((synonyms[syn].replace('"','').trim()));
+             console.log(syn);
+             console.log(synonyms[syn]);
+            result.push( new Synonym( {id: synonyms.indexOf(syn), synonym: (syn.replace('"', '').trim())}) );
            }
     }) ;
        } catch (err) {
-         console.log('Error while adding synonyms');
+         console.log('Error while adding synonyms'+ <string>(err));
        }
-       const resultFinal= new Synonyms({syn_list:result});
 
-    return resultFinal;
+    return result;
 
   }
 
-  list_from_string( custom: string) : any{
-    let start=custom.indexOf("[")+1;
-    let end= custom.indexOf("]")
-    let inter = custom.substring(start,end);
-    const first =inter.split(",")
-    let list_syn= [];
+  list_from_string( custom: string): Array<string> {
+    let start = custom.indexOf("[") + 1;
+    let end = custom.indexOf("]")
+    let inter = custom.substring(start, end);
+    const first = inter.split(",")
+    let list_syn : Array<string>;
     for (let syn in first){
-      const startchar = first[syn].indexOf('"');
-      let endchar= first[syn].lastIndexOf('"');
-      list_syn.push(first[syn].replace('"',''));
+      list_syn.push(first[syn].replace('"', ''));
    }
     console.log("list_syn=", list_syn);
 
@@ -138,7 +139,7 @@ export class ChatService {
     let answer = 'synonyms added successfully !';
     try {
          await this.http.post<any>(this.urlIntent, dataAction).toPromise()
-         .then( res =>{answer = res['messages'][0]['text'];console.log(answer);}) ;
+         .then( res => {answer = res['messages'][0]['text']; console.log(answer); }) ;
        } catch (err) {
          answer = 'Error while adding synonyms';
        }
@@ -184,7 +185,7 @@ export class ChatService {
   await this.http.post<any>(this.urlIntent, dataToSend).toPromise()
   .then( res => console.log(res));
 } catch (err) {
-  return ' I\'m having an issue';}
+  return ' I\'m having an issue'; }
    return answer;
 }
 
@@ -203,7 +204,7 @@ async getFields(): Promise<Fields> {
      };
 
     await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
-      res => { fields = new Fields ({ mixed: res['messages'][0]['custom']['mixed'],tables: res['messages'][0]['custom']['seperate']['tables'],
+      res => { fields = new Fields ({ mixed: res['messages'][0]['custom']['mixed'], tables: res['messages'][0]['custom']['seperate']['tables'],
      columns: res['messages'][0]['custom']['seperate']['columns']});
     });
       // tslint:disable-next-line: quotemark

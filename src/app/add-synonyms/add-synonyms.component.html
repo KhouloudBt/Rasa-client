@@ -29,7 +29,7 @@
             <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile">Add a file</button>
           </div>
             <div class="col">
-              <button type="button" class="btn btn-dark" data-toggle="collapse" href="#sendSynonyms" role="button" aria-expanded="false" aria-controls="addFile">Enter synonyms in textarea</button>
+              <button type="button" class="btn btn-dark" data-toggle="collapse" href="#sendSynonyms" role="button" aria-expanded="false" aria-controls="addFile" (click)="clicked()">Enter synonyms in textarea</button>
           </div>
         </div>
 
@@ -39,7 +39,24 @@
             <label class="custom-file-label" for="customFile">Choose file</label>
           </div>
           <div class="collapse" id="sendSynonyms" data-parent=#collapse>
-            <app-send-synonyms [tableField]="table" [columnField]="column" [send]="send"></app-send-synonyms>
+            <table #dataTable class="content-table table table-sm  table-hover" style="width:100%">
+              <thead>
+                <tr >
+                  <th>ID</th>
+                  <th>Synonym</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let syn of synonyms | async" [attr.id]="syn.id">
+                  <td>{{syn.id}}</td>
+                  <td>{{syn.synonym}}</td>
+                  <td><button type="button" class="btn btn-danger" (click)="Remove(syn.id)">Remove</button>
+                  </td>
+                </tr>
+                </tbody>
+
+            </table>
           </div>
         </div>
 

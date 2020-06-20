@@ -1,5 +1,6 @@
-import { ChatService, Fields } from './../angular-bot/chat.service';
-import { Component, OnInit, ChangeDetectorRef, Output} from '@angular/core';
+import { async } from '@angular/core/testing';
+import { ChatService, Fields, Synonym } from './../angular-bot/chat.service';
+import { Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
 import {  FormGroup, FormControl } from '@angular/forms';
 import { ConditionalExpr } from '@angular/compiler';
 import { Callbacks } from 'jquery';
@@ -13,9 +14,14 @@ import { Callbacks } from 'jquery';
 
 
 export class AddSynonymsComponent implements OnInit {
-  @Output() public send = false;
-  @Output() public table: any;
-  @Output() public column: any;
+  public send = false;
+  public tableField: any;
+  public columnField: any;
+  dataTable: any;
+  dtOptions: any;
+  tableData = [];
+  synonyms: Array<Synonym>;
+  // @ViewChild('dataTable', {static: true}) table: { nativeElement: any; };
   submitted = false;
   fields: Fields;
   filePath: any;
@@ -46,8 +52,8 @@ export class AddSynonymsComponent implements OnInit {
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
-    console.log(this.table);
-    console.log(this.column);
+    console.log(this.tableField);
+    console.log(this.columnField);
 
     this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x]);
     // this.ChangeSelectTable();
@@ -72,22 +78,42 @@ export class AddSynonymsComponent implements OnInit {
 //       fileReader.readAsText(file);
 // }
 // }
-public clicked()
+async clicked()
 {
   if ((this.FieldsForm.get('fieldColumn').value === undefined )&&( this.FieldsForm.get('fieldTable').value === undefined))
    {
      alert ("you shoud select a field");
    }
 else{
-  console.log("hello");
-  this.send = true;
-console.log(this.send);}
+  this.synonyms = (await (this.chatService.SendSynonyms(this.FieldsForm.get('fieldTable').value, this.FieldsForm.get('fieldColumn').value)));
+  console.log( "type syn", typeof this.synonyms);
 }
+}
+
+public Remove( id: number)
+{
+  this.synonyms.splice(1, id);
+  console.log(this.synonyms);
+
+}
+// async getDataFromSource() {
+//   this.tableData = ((await this.chatService.SendSynonyms(this.tableField, this.columnField)).syn_list);
+//   this.dtOptions = {
+//       data: this.tableData,
+//       columns: [
+//         {title: 'synonyms', data: this.tableData}]
+//     };
+
+//     this.dataTable = $(this.table.nativeElement);
+//     this.dataTable.DataTable(this.dtOptions);
+//     console.log("hi");
+//   }
+
    onSubmit() {
     this.submitted = true;
-    this.column = this.FieldsForm.get('fieldColumn').value;
-    this.table = this.FieldsForm.get('fieldTable').value;
-    let synonyms_recieved = this.chatService.SendSynonyms(this.table, this.column);
+    this.columnField = this.FieldsForm.get('fieldColumn').value;
+    this.tableField = this.FieldsForm.get('fieldTable').value;
+    // let synonyms_recieved = this.chatService.SendSynonyms(this.tableField, this.columnField);
     // let reader = new FileReader();
     //  reader.onload = (e)=> {
     //     let list_syn =reader.result.toString().trim().split('\n');

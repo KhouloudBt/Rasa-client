@@ -19,9 +19,10 @@ export class AddSynonymsComponent implements OnInit {
 
   public send = false;
   public tableField: any;
-  public columnField: any;
+  public columnField = "none";
   public newSynonym: any;
-  public newlist: Synonym[] = [];
+  public newlist = [];
+  public finalList: any[] = [];
   dataTable: any;
   dtOptions: any;
   tableData = [];
@@ -46,13 +47,7 @@ export class AddSynonymsComponent implements OnInit {
 
 
 
-  // seperate = new FillDict();
-  // seperate.fill['tables']=[];
 
-
-
-  // seperate["tables"] = [];
-  // seperate["columns"]=[];
 
 
   constructor( public chatService: ChatService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
@@ -61,30 +56,13 @@ export class AddSynonymsComponent implements OnInit {
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
-    this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x]);
+    this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x], this.synonyms=[]);
 
-    // this.ChangeSelectTable();
+
 
   }
 
   get f() { return this.FieldsForm.controls; }
-
-//   uploadDocument(file: any) {
-//     const fileReader = new FileReader();
-//     fileReader.onload = (e) => {
-//       console.log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
-//       const syn = fileReader.result.toString().split('\n');
-//       console.log("result", fileReader.result);
-//       console.log(syn);
-//     //   let i = 0;
-//     // for (let st in syn) {
-//     //   console.log("syns",st)
-//     //     fileinput[i]=<string>st;
-//     //     i=i+1;
-//     // };
-//       fileReader.readAsText(file);
-// }
-// }
 
 public  findByIndex ( id: number): Synonym{
    for (let syn of this.synonyms)
@@ -125,33 +103,30 @@ public Remove( syn: Synonym)
 public SetToEditSyn(syn : Synonym)
 { this.toEditSyn = syn; }
 
-public onSubmit() {
+async onSubmit() {
     this.submitted = true;
-    this.columnField = this.FieldsForm.get('fieldColumn').value;
-    this.tableField = this.FieldsForm.get('fieldTable').value;
-    // let synonyms_recieved = this.chatService.SendSynonyms(this.tableField, this.columnField);
-    // let reader = new FileReader();
-    //  reader.onload = (e)=> {
-    //     let list_syn =reader.result.toString().trim().split('\n');
-    //     for ( let el in list_syn) {
-    //       this.fileinput.push(list_syn[el]);
-    //       };     }
-    //  reader.readAsText(this.filePath);
+    if (this.FieldsForm.get('fieldColumn').value != undefined)
+    {
+      this.columnField = this.FieldsForm.get('fieldColumn').value;
+    }
 
-    // const fileReader = new FileReader();
-    // fileReader.onload = (e) => {
-    //   console.log("LOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOL");
-    //   const syn = fileReader.result.toString().split('\n');
-    //   console.log("result", fileReader.result);
-    //   console.log(syn);
-    // //   let i = 0;
-    // // for (let st in syn) {
-    // //   console.log("syns",st)
-    // //     fileinput[i]=<string>st;
-    // //     i=i+1;
-    // // };
-    //   fileReader.readAsText(this.filePath);
 
+
+
+   for (let syn in this.synonyms)
+   {
+     this.finalList.push(this.synonyms[syn].synonym.trim());
+   }
+   for (let syn in this.newlist)
+   {
+     if (this.synonyms.indexOf(this.newlist[syn]) === -1)
+     {
+       this.finalList.push(this.newlist[syn].trim());
+     }
+
+   }
+    let answer = await (this.chatService.addSynonyms(this.finalList, this.FieldsForm.get('fieldTable').value,this.columnField));
+    console.log(answer);
   }
 
 onReset() {
@@ -160,9 +135,17 @@ onReset() {
   }
 onFileChange(event) {
 
-    if (event.target.files.length > 0) {
+   if (event.target.files.length > 0) {
       this.filePath = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.newlist = reader.result.toString().trim().split("\n");
+        console.log(this.newlist);
     }
+    reader.readAsText(this.filePath);
+
+      }
+
       }
     }
 

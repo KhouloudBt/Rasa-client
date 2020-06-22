@@ -111,7 +111,7 @@ export class ChatService {
     return list_syn;
 
   }
-  async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any, write_type : any) {
+  async addSynonyms(synonyms: any, fieldTable: any, fieldColumn: any) {
 
     const dataAction = JSON.stringify( {
       "name": "add_synonyms",
@@ -129,16 +129,13 @@ export class ChatService {
               "entity": "synonyms_list",
               "value": synonyms
           },
-          {
-            "entity": "write_type",
-            "value": write_type
-        }
+
       ]});
       // answer = res[0].text)
     let answer = 'synonyms added successfully !';
     try {
          await this.http.post<any>(this.urlIntent, dataAction).toPromise()
-         .then( res => {answer = res['messages'][0]['text']; console.log(answer); }) ;
+         .then( res => {answer = res['messages'][0]['text'];  }) ;
        } catch (err) {
          answer = 'Error while adding synonyms';
        }

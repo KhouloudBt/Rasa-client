@@ -13,6 +13,7 @@ import { SwitchComponent } from './switch/switch.component';
 import { DataTablesModule } from 'angular-datatables';
 import { DataDisplayComponent } from './data-display/data-display.component';
 import { SendSynonymsComponent } from './send-synonyms/send-synonyms.component';
+import { AuthComponent } from './auth/auth.component';
 
 
 
@@ -26,6 +27,7 @@ import { SendSynonymsComponent } from './send-synonyms/send-synonyms.component';
     SwitchComponent,
     DataDisplayComponent,
     SendSynonymsComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,

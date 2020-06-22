@@ -56,11 +56,9 @@ export class AddSynonymsComponent implements OnInit {
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
-    this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x], this.synonyms=[]);
-
-
-
-  }
+    this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => {this.columns = this.mixed[x], this.synonyms = [];
+                                                                   this.newlist = []; this.finalList = []; });
+    }
 
   get f() { return this.FieldsForm.controls; }
 
@@ -117,7 +115,7 @@ async onSubmit() {
    {
      this.finalList.push(this.synonyms[syn].synonym.trim());
    }
-   for (let syn in this.newlist)
+    for (let syn in this.newlist)
    {
      if (this.synonyms.indexOf(this.newlist[syn]) === -1)
      {
@@ -142,7 +140,7 @@ onFileChange(event) {
         this.newlist = reader.result.toString().trim().split("\n");
         console.log(this.newlist);
     }
-    reader.readAsText(this.filePath);
+      reader.readAsText(this.filePath);
 
       }
 

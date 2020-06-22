@@ -142,6 +142,57 @@ export class ChatService {
     return answer;
 
   }
+  async changePassword(user: any, password: any): Promise<boolean> {
+
+    const dataAction = JSON.stringify( {
+      "name": "change_password",
+      "entities":
+        [
+          {
+              "entity": "password",
+              "value": password
+          },
+          {
+              "entity": "user",
+              "value": user
+          }
+
+      ]});
+    let answer = '';
+    await this.http.post<any>(this.urlIntent, dataAction).toPromise()
+    .then( res => {answer = res['messages'][0]['text'];}) ;
+    if(answer="true" ){return true;}
+    else {return false;}
+  }
+
+
+  async authentification(user: any, password) {
+
+    const dataAction = JSON.stringify( {
+      "name": "authentification",
+      "entities":
+        [
+          {
+              "entity": "password",
+              "value": password
+          },
+          {
+              "entity": "user",
+              "value": user
+          }
+
+      ]});
+      // answer = res[0].text)
+    let answer = 'synonyms added successfully !';
+    try {
+         await this.http.post<any>(this.urlIntent, dataAction).toPromise()
+         .then( res => {answer = res['messages'][0]['text'];  }) ;
+       } catch (err) {
+         answer = 'Error trying to authentificate';
+       }
+    return answer;
+
+  }
   async connectToDatabase(dbusername: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
    const dataToSend = JSON.stringify( {
   "name": "connect_to_database",

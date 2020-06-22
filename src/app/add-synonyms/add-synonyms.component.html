@@ -1,4 +1,4 @@
-<fieldset class="border p-2">
+<fieldset class="border p-2 form-group">
   <legend class="w-auto">Add synonyms to database fields:</legend>
   <form [formGroup]="FieldsForm" (ngSubmit)="onSubmit()">
     <div class="form-group row">
@@ -6,24 +6,28 @@
             <label for="fieldTable">Please choose a table</label>
             <select formControlName="fieldTable" id="fieldTable" class="custom-select form-control" required [ngClass]="{ 'is-invalid': submitted && f.fieldTable.errors }">
                <option *ngFor= "let table of tables" [value]="table">{{table}}</option>
-
             </select>
         </div>
     </div>
-        <div class="form-group row">
-          <div class="form-group col">
+    <div class="form-group row">
+      <div class="form-group col">
+
+      <button type="button" class="btn btn-outline-success" data-toggle="collapse" href="#choosecolumn" role="button" aria-expanded="false" aria-controls="choosecolumn">Choose column</button>
+      </div>
+    </div>
+    <div class="collapse" id="choosecolumn">
+
+        <div class="form-group row " >
+             <div class="form-group col">
+              <label for="fieldColumn">Please choose a column</label>
 
 
-            <label for="fieldTable">Please choose a column</label>
-
-            <select formControlName="fieldColumn" id="fieldColumn" class="custom-select form-control">
+           <select formControlName="fieldColumn" id="fieldColumn" class="custom-select form-control">
                 <option *ngFor= "let column of columns" [value]="column"> {{column}}</option>
             </select>
-            <!-- <div *ngIf="submitted && f.field.errors" class="invalid-feedback">
-                <div *ngIf="f.field.errors.required">You should select at least one field</div>
-            </div> -->
         </div>
       </div>
+    </div>
         <div class="form-group row">
           <div class="bouton">
             <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile">Add a file</button>
@@ -38,33 +42,86 @@
             <input  formControlName="addFile" (change)="onFileChange($event)" type="file" accept=".txt" class="custom-file-input form-control-file" id="customFile">
             <label class="custom-file-label" for="customFile">Choose file</label>
           </div>
+         </div>
           <div class="collapse" id="sendSynonyms" data-parent=#collapse>
-            <table #dataTable class="content-table table table-sm  table-hover" style="width:100%">
-              <thead>
-
+            <table #dataTable class=" table table-responsive table-lg  table-hover">
+              <thead class="thead-dark">
                 <tr>
-                  <th><button class="circle" (click)= "addRow()">
-                    <div class="line-wrapper">
-                      <div class="horizontal"></div>
-                      <div class="vertical" ></div>
-                    </div>
+                  <th><button class="btn btn-light" data-target=#Addmodal data-toggle="modal">
+                    Add
                   </button></th>
                   <th>Synonym</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr *ngFor="let syn of synonyms ">
-                  <td>{{syn.id}}</td>
-                  <td contenteditable (keydown.enter)="updateSyn($event, syn.id)" >{{syn.synonym}}</td>
-                  <td><button type="button" class="btn btn-danger" (click)="Remove(syn)">Remove</button>
+              <tbody class=" table table-striped">
+                <tr *ngFor="let syn of synonyms">
+                  <td class ="fit">{{syn.id}}</td>
+                  <td class ="fit">{{syn.synonym}}</td>
+                  <td class ="fit">
+                  <button type="button" class="btn btn-danger" (click)="Remove(syn)">Remove</button>
+                  <button type="button" class="btn btn-secondary" (click)="SetToEditSyn(syn)" data-target=#Editmodal data-toggle="modal"> Edit</button>
                   </td>
                 </tr>
                 </tbody>
 
             </table>
           </div>
+        <div class="modal fade" tabindex="-1" id="Addmodal"
+        data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Add synonym</h4>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="inputUserName">new synonym</label>
+                        <input class="form-control" placeholder="Enter new synonym"
+                                type="text" id="newSynonym" [(ngModel)]="newSynonym" [ngModelOptions]="{standalone: true}" />
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" (click)="AddSynonym()">Add</button>
+                <button type="button" class="btn btn-primary"data-dismiss="modal">Close</button>
+            </div>
         </div>
+    </div>
+</div>
+
+
+<div class="modal fade" tabindex="-1" id="Editmodal"
+data-keyboard="false" data-backdrop="static">
+<div class="modal-dialog modal-sm">
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">
+            &times;
+        </button>
+        <h4 class="modal-title">Edit synonym</h4>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="inputUserName">Edit syn</label>
+                <input class="form-control" type="text" id="toEditSyn" [(ngModel)]="toEditSyn.synonym" [ngModelOptions]="{standalone: true}" (keyup.enter)="EditSynonym()"  />
+            </div>
+
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click)="EditSynonym()" >Save</button>
+        <button type="button" class="btn btn-primary"data-dismiss="modal">Close</button>
+    </div>
+</div>
+</div>
+</div>
 
     <div class="center-text">
       <button type="submit" class="btn btn-info button1">Submit</button>

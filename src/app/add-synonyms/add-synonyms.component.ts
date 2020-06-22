@@ -1,9 +1,8 @@
 import { async } from '@angular/core/testing';
 import { ChatService, Fields, Synonym } from './../angular-bot/chat.service';
-import { Component, OnInit, ChangeDetectorRef, ViewChild} from '@angular/core';
-import {  FormGroup, FormControl } from '@angular/forms';
-import { ConditionalExpr } from '@angular/compiler';
-import { Callbacks } from 'jquery';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@angular/core';
+import {  FormGroup, FormControl, FormBuilder } from '@angular/forms';
+
 
 
 @Component({
@@ -14,14 +13,20 @@ import { Callbacks } from 'jquery';
 
 
 export class AddSynonymsComponent implements OnInit {
+  @ViewChild('Addmodal', {static: false}) Addmodal: ElementRef;
+  @ViewChild('Editmodal', {static: false}) Editmodal: ElementRef;
+
+
   public send = false;
   public tableField: any;
   public columnField: any;
+  public newSynonym: any;
+  public newlist: Synonym[] = [];
   dataTable: any;
   dtOptions: any;
   tableData = [];
   synonyms: Synonym[] = [];
-  // @ViewChild('dataTable', {static: true}) table: { nativeElement: any; };
+  public toEditSyn: Synonym = new Synonym(-1, " ");
   submitted = false;
   fields: Fields;
   filePath: any;
@@ -30,12 +35,16 @@ export class AddSynonymsComponent implements OnInit {
   public columns: any;
   public tables: any;
   public fileinput: string [] = [];
-
   FieldsForm = new FormGroup({
-    fieldTable : new FormControl('choose table'),
-    fieldColumn: new FormControl('choose column'),
+    fieldTable : new FormControl(),
+    fieldColumn: new FormControl(),
     addFile: new FormControl(),
   });
+  params = {offset: 0, limit: 10};
+  itemCount = 0;
+  items = [];
+
+
 
   // seperate = new FillDict();
   // seperate.fill['tables']=[];
@@ -46,16 +55,14 @@ export class AddSynonymsComponent implements OnInit {
   // seperate["columns"]=[];
 
 
-  constructor( public chatService: ChatService, private cd: ChangeDetectorRef) { }
+  constructor( public chatService: ChatService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
 
   async ngOnInit() {
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
-    console.log(this.tableField);
-    console.log(this.columnField);
-
     this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => this.columns = this.mixed[x]);
+
     // this.ChangeSelectTable();
 
   }
@@ -78,35 +85,47 @@ export class AddSynonymsComponent implements OnInit {
 //       fileReader.readAsText(file);
 // }
 // }
-public updateSyn(Event: Event, id: number){
 
-let value = event.target.
+public  findByIndex ( id: number): Synonym{
+   for (let syn of this.synonyms)
+   {
+     if (syn.id === id){return syn ;}
+   }
 }
-public addRow()
+
+public AddSynonym()
 {
-  const newSyn = new Synonym(((this.synonyms.length ) + 1 ), '');
-  this.synonyms.push( newSyn);
-  console.log("hello")
-
+  const newSyn = new Synonym(((this.synonyms.length ) + 1 ), this.newSynonym);
+  this.synonyms.push(newSyn);
 }
+
 async clicked()
 {
-  if ((this.FieldsForm.get('fieldColumn').value === undefined )&&( this.FieldsForm.get('fieldTable').value === undefined))
+  if ((this.FieldsForm.get('fieldColumn').value === undefined) && ( this.FieldsForm.get('fieldTable').value === undefined))
    {
      alert ("you shoud select a field");
    }
 else{
   this.synonyms = (await (this.chatService.SendSynonyms(this.FieldsForm.get('fieldTable').value, this.FieldsForm.get('fieldColumn').value)));
-  console.log( "type syn", typeof this.synonyms);
-}
-}
 
+}
+}
+public EditSynonym()
+{
+console.log (this.toEditSyn);
+console.log( this.findByIndex(this.toEditSyn.id));
+console.log(this.synonyms);
+
+}
 public Remove( syn: Synonym)
 {
   this.synonyms = this.synonyms.filter(item => item.id !== syn.id);
 }
 
-   onSubmit() {
+public SetToEditSyn(syn : Synonym)
+{ this.toEditSyn = syn; }
+
+public onSubmit() {
     this.submitted = true;
     this.columnField = this.FieldsForm.get('fieldColumn').value;
     this.tableField = this.FieldsForm.get('fieldTable').value;
@@ -133,22 +152,13 @@ public Remove( syn: Synonym)
     // // };
     //   fileReader.readAsText(this.filePath);
 
-    // this.uploadDocument(this.filePath);
-    // console.log("fileinput", this.fileinput);
-    // const alert = this.chatService.addSynonyms(this.fileinput, table, column);
-    // stop here if form is invalid
-    // if (this.FieldsForm.invalid) {
-    //     return;
-    // }
-    // // display form values on success
-    // alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
   }
 
-  onReset() {
+onReset() {
     this.submitted = false;
     this.FieldsForm.reset();
   }
-  onFileChange(event) {
+onFileChange(event) {
 
     if (event.target.files.length > 0) {
       this.filePath = event.target.files[0];

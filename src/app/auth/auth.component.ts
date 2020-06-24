@@ -17,7 +17,7 @@ export class AuthComponent implements OnInit {
     submitted = false;
     returnUrl: string;
     username: any;
-    password : any;
+    password: any;
     error = '';
 
     constructor(
@@ -25,12 +25,7 @@ export class AuthComponent implements OnInit {
       private route: ActivatedRoute,
       private router: Router,
       private authService: AuthService
-  ) {
-      // redirect to home if already logged in
-      // if (this.authenticationService.currentUserValue) {
-      //     this.router.navigate(['home']);
-      // }
-  }
+  ) {}
 
   ngOnInit() {
       this.loginForm = this.formBuilder.group({

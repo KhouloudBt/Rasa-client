@@ -1,3 +1,4 @@
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { AuthComponent } from './auth/auth.component';
 import {NgModule} from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -16,7 +17,9 @@ const routes: Routes = [
   {path: 'switch', component: SwitchComponent},
   {path: 'home', component: HomeComponent},
   {path: 'login', component: AuthComponent},
-  {path: 'display', component: DataDisplayComponent}
+  {path: 'display', component: DataDisplayComponent},
+  {path: 'change-pwd', component: ChangePasswordComponent}
+
 ]
 
 @NgModule({

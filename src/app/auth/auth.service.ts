@@ -53,7 +53,7 @@ export class AuthService {
 
       ]});
       // answer = res[0].text)
-    let answer = 'synonyms added successfully !';
+    let answer = '';
     try {
          await this.http.post<any>(this.urlIntent, dataAction).toPromise()
          .then( res => {answer = res['messages'][0]['text']; }) ;

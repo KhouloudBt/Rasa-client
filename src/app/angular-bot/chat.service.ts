@@ -166,7 +166,7 @@ export class ChatService {
   }
 
 
-  async authentification(user: any, password) {
+  async authentification(user: any, password): Promise<string>{
 
     const dataAction = JSON.stringify( {
       "name": "authentification",

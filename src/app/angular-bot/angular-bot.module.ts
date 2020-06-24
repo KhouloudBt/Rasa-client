@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatComponent } from './chat/chat.component';
-import { MainComponent } from './main/main.component';
 import { ChatService } from './chat.service';
 import { FormsModule } from '@angular/forms';
 import { ChatAvatarComponent } from './chat-avatar/chat-avatar.component';
@@ -16,7 +15,7 @@ import { DataTablesModule } from 'angular-datatables';
 
 
 @NgModule({
-  declarations: [ChatComponent, MainComponent, ChatAvatarComponent, ChatInputComponent],
+  declarations: [ChatComponent, ChatAvatarComponent, ChatInputComponent],
   providers: [ChatService],
   imports: [
     CommonModule,

@@ -2,8 +2,6 @@ import { ChatService } from './../angular-bot/chat.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs/operators';
-
 
 
 @Component({
@@ -16,18 +14,20 @@ export class AuthComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
+    username: any;
+    password : any;
     error = '';
 
     constructor(
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private authenticationService: AuthenticationService
+      private ChatService : ChatService
   ) {
       // redirect to home if already logged in
-      if (this.authenticationService.currentUserValue) {
-          this.router.navigate(['/']);
-      }
+      // if (this.authenticationService.currentUserValue) {
+      //     this.router.navigate(['home']);
+      // }
   }
 
   ngOnInit() {
@@ -36,31 +36,33 @@ export class AuthComponent implements OnInit {
           password: ['', Validators.required]
       });
 
-      // get return url from route parameters or default to '/'
-      this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
   }
 
   // convenience getter for easy access to form fields
   get f() { return this.loginForm.controls; }
 
-  onSubmit() {
+  async onSubmit() {
       this.submitted = true;
 
       // stop here if form is invalid
       if (this.loginForm.invalid) {
           return;
       }
+      this.username= this.f.username.value;
+      this.password= this.f.password.value
 
-      this.loading = true;
-      this.authenticationService.login(this.f.username.value, this.f.password.value)
-          .pipe(first())
-          .subscribe(
-              data => {
-                  this.router.navigate([this.returnUrl]);
-              },
-              error => {
-                  this.error = error;
-                  this.loading = false;
-              });
-  }
+    let logged=  await this.ChatService.authentification(this.f.username.value,this.f.password.value)
+    console.log(this.f.password.value);
+    console.log(logged);
+    if( logged == 'true')
+    {
+
+      this.loading=true;
+      this.router.navigate(['/home'], { queryParams: { user: this.username} });
+    }
+    else {console.log('false password');}
+        }
+
+
+
 }

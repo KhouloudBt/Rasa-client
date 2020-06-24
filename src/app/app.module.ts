@@ -14,6 +14,7 @@ import { DataTablesModule } from 'angular-datatables';
 import { DataDisplayComponent } from './data-display/data-display.component';
 import { SendSynonymsComponent } from './send-synonyms/send-synonyms.component';
 import { AuthComponent } from './auth/auth.component';
+import { HomeComponent } from './home/home.component';
 
 
 
@@ -28,6 +29,7 @@ import { AuthComponent } from './auth/auth.component';
     DataDisplayComponent,
     SendSynonymsComponent,
     AuthComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

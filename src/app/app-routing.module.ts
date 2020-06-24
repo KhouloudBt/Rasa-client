@@ -5,18 +5,19 @@ import { HomeComponent} from './home/home.component';
 import { ChatComponent} from './angular-bot/chat/chat.component';
 import {AddSynonymsComponent} from './add-synonyms/add-synonyms.component';
 import {SwitchComponent} from './switch/switch.component';
+import { DataDisplayComponent } from './data-display/data-display.component';
 
 
 
 const routes: Routes = [
-  {path: '', pathMatch: 'full', redirectTo: 'home'},
-  {path: 'home', component: HomeComponent},
+  {path: '', pathMatch: 'full', redirectTo: 'login'},
   {path: 'chat', component: ChatComponent},
   {path : 'add', component: AddSynonymsComponent},
   {path: 'switch', component: SwitchComponent},
-  {path: 'login', component: AuthComponent}
-
-];
+  {path: 'home', component: HomeComponent},
+  {path: 'login', component: AuthComponent},
+  {path: 'display', component: DataDisplayComponent}
+]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

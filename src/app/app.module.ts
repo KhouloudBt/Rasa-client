@@ -15,6 +15,7 @@ import { DataDisplayComponent } from './data-display/data-display.component';
 import { SendSynonymsComponent } from './send-synonyms/send-synonyms.component';
 import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 
@@ -30,6 +31,7 @@ import { HomeComponent } from './home/home.component';
     SendSynonymsComponent,
     AuthComponent,
     HomeComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

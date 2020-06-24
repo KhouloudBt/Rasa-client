@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,18 +9,13 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  user: string;
-  sub : any;
+  user:string ;
+  sub: any;
 
-  constructor(  private route: ActivatedRoute) { }
+  constructor(  private authService: AuthService) { }
 
   ngOnInit() {
-    this.sub = this.route
-      .queryParams
-      .subscribe(params => {
-        // Defaults to user if no query param provided.
-        this.user = params['user'] || 'user';
-      });
+    this.authService.getCurrentUser().subscribe(val => this.user = val);
   }
 
 }

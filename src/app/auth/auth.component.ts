@@ -1,7 +1,9 @@
-import { ChatService } from './../angular-bot/chat.service';
-import { Component, OnInit } from '@angular/core';
+import { AuthService } from './auth.service';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 
 @Component({
@@ -22,7 +24,7 @@ export class AuthComponent implements OnInit {
       private formBuilder: FormBuilder,
       private route: ActivatedRoute,
       private router: Router,
-      private ChatService : ChatService
+      private authService: AuthService
   ) {
       // redirect to home if already logged in
       // if (this.authenticationService.currentUserValue) {
@@ -35,6 +37,7 @@ export class AuthComponent implements OnInit {
           username: ['', Validators.required],
           password: ['', Validators.required]
       });
+      this.authService.SetCurrentUser('None' as unknown as Observable<any>);
 
   }
 
@@ -48,20 +51,20 @@ export class AuthComponent implements OnInit {
       if (this.loginForm.invalid) {
           return;
       }
-      this.username= this.f.username.value;
-      this.password= this.f.password.value
+      this.username = this.f.username.value;
+      this.password = this.f.password.value;
 
-    let logged=  await this.ChatService.authentification(this.f.username.value,this.f.password.value)
-    console.log(this.f.password.value);
-    console.log(logged);
-    if( logged == 'true')
-    {
+      const logged =  await this.authService.authentification(this.f.username.value,this.f.password.value)
+      console.log(this.f.password.value);
+      console.log(logged);
+      if ( logged === 'true') {
+      this.loading = true;
+      this.authService.SetCurrentUser(this.username as Observable<any>);
+      this.router.navigate(['/home']);
+    } else {
+      alert('login failed'); }
+           }
 
-      this.loading=true;
-      this.router.navigate(['/home'], { queryParams: { user: this.username} });
-    }
-    else {console.log('false password');}
-        }
 
 
 

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject} from 'rxjs';
+import { Subject, BehaviorSubject, Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import { syntaxError } from '@angular/compiler';
 
 
 
@@ -49,6 +48,7 @@ export class ChatService {
   urlAction = 'http://localhost:5005/conversations/default/execute';
   urlSlot = ' http://localhost:5005/conversations/default/tracker/events';
   conversation = new Subject<Message[]>();
+  public ShowResult=  new BehaviorSubject<any>(null);
 
 
 
@@ -142,57 +142,9 @@ export class ChatService {
     return answer;
 
   }
-  async changePassword(user: any, password: any): Promise<boolean> {
-
-    const dataAction = JSON.stringify( {
-      "name": "change_password",
-      "entities":
-        [
-          {
-              "entity": "password",
-              "value": password
-          },
-          {
-              "entity": "user",
-              "value": user
-          }
-
-      ]});
-    let answer = '';
-    await this.http.post<any>(this.urlIntent, dataAction).toPromise()
-    .then( res => {answer = res['messages'][0]['text'];}) ;
-    if(answer="true" ){return true;}
-    else {return false;}
-  }
 
 
-  async authentification(user: any, password): Promise<string>{
 
-    const dataAction = JSON.stringify( {
-      "name": "authentification",
-      "entities":
-        [
-          {
-              "entity": "password",
-              "value": password
-          },
-          {
-              "entity": "user",
-              "value": user
-          }
-
-      ]});
-      // answer = res[0].text)
-    let answer = 'synonyms added successfully !';
-    try {
-         await this.http.post<any>(this.urlIntent, dataAction).toPromise()
-         .then( res => {answer = res['messages'][0]['text'];  }) ;
-       } catch (err) {
-         answer = 'Error trying to authentificate';
-       }
-    return answer;
-
-  }
   async connectToDatabase(dbusername: any, password: any, dbname: any, dbhost: any, dbdriver: any, dbdialect: any ) {
    const dataToSend = JSON.stringify( {
   "name": "connect_to_database",
@@ -259,18 +211,41 @@ async getFields(): Promise<Fields> {
   }
 
 
+  async getResult(): Promise<any> {
+    // tslint:disable-next-line: variable-name
+    const dataToSend = JSON.stringify( {
+
+      "name": "action_send_result",
+     });
+     let result= []
+
+      await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
+      res => { result= res['messages'][0]['custom']['mixed'];
+    });
+      // tslint:disable-next-line: quotemark
+      return result;
+  }
+
+
 
   async getBotAnswer(msg: string) {
+    let botMessage : Message;
     const userMessage = new Message('user', msg, new Date().getTime());
     this.conversation.next([userMessage]);
-    const botMessage = new Message('bot', await this.getBotMessage(msg), new Date().getTime());
+    let answer =  await this.getBotMessage(msg);
+    if (answer == "result") {
+      this.SetShowResult(true as unknown as Observable<any>);
+       botMessage = new Message('bot', "your request has been treated successfully", new Date().getTime());
+    }
+    else { botMessage = new Message('bot', answer, new Date().getTime());}
 
     setTimeout(() => {
       this.conversation.next([botMessage]);
     }, 1500);
+
   }
 
- async getBotMessage(question: string) {
+ async getBotMessage(question: string){
   const dataToSend = JSON.stringify({
     recipient_id: 'user',
     message: question
@@ -278,13 +253,24 @@ async getFields(): Promise<Fields> {
   // tslint:disable-next-line: quotemark
   let answer = "I'm having an issue";
   try {
-  await this.http.post<Response[]>(this.url, dataToSend).toPromise()
-  .then( res => answer = res[0].text)
-  ;
+    await this.http.post<Response[]>(this.url, dataToSend).toPromise()
+    .then( res => {answer = res[0].text; console.log(res);})
+    ;
 } catch (err) {
   return ' I\'m having an issue  ';
 }
+
+
   return answer;
+}
+
+
+getShowResult(): Observable<any> {
+  return this.ShowResult.asObservable();
+}1
+SetShowResult(res: Observable<any>)
+{
+  this.ShowResult.next(res);
 }
 }
 

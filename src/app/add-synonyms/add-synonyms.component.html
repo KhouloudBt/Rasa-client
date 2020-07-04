@@ -1,3 +1,12 @@
+
+<div *ngIf="answer" class="alert alert-success alert-dismissible fade show alert-trim" role="alert">
+  {{answer}}  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button></div>
+  <div *ngIf="fieldmissing" class="alert alert-danger alert-dismissible fade show alert-trim" role="alert">
+    You should select a field ! <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button></div>
 <fieldset class="border p-2 form-group">
   <legend class="w-auto">Add synonyms to database fields:</legend>
   <form [formGroup]="FieldsForm" (ngSubmit)="onSubmit()">
@@ -30,7 +39,7 @@
     </div>
         <div class="form-group row">
           <div class="bouton">
-            <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile">Add a file</button>
+            <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile" (click)="verifField()">Add a file</button>
           </div>
             <div class="col">
               <button type="button" class="btn btn-dark" data-toggle="collapse" href="#sendSynonyms" role="button" aria-expanded="false" aria-controls="addFile" (click)="clicked()">Enter synonyms in textarea</button>
@@ -127,8 +136,9 @@ data-keyboard="false" data-backdrop="static">
       <button type="submit" class="btn btn-info button1">Submit</button>
       <button class="btn btn-secondary button2" type="reset" (click)="onReset()">Cancel</button></div>
 
+
+
 </form>
 </fieldset>
-
 
 

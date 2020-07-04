@@ -135,3 +135,9 @@ input {
 .vertical.open {
   transform: rotate(180deg);
 }
+.alert-trim {
+  display: inline-block;
+}
+.custom-select{
+  display: inline-block;
+}

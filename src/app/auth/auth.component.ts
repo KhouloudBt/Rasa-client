@@ -9,7 +9,7 @@ import { switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
   loginForm: FormGroup;
@@ -22,7 +22,6 @@ export class AuthComponent implements OnInit {
 
     constructor(
       private formBuilder: FormBuilder,
-      private route: ActivatedRoute,
       private router: Router,
       private authService: AuthService
   ) {}

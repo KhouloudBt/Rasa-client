@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import { async } from '@angular/core/testing';
 import { ChatService, Fields, Synonym } from './../angular-bot/chat.service';
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef} from '@angular/core';
@@ -16,10 +17,12 @@ export class AddSynonymsComponent implements OnInit {
   @ViewChild('Addmodal', {static: false}) Addmodal: ElementRef;
   @ViewChild('Editmodal', {static: false}) Editmodal: ElementRef;
 
-
+  answer : any;
+  user : any;
   public send = false;
   public tableField: any;
   public columnField = "none";
+  fieldmissing : boolean = false;
   public newSynonym: any;
   public newlist = [];
   public finalList: any[] = [];
@@ -50,9 +53,11 @@ export class AddSynonymsComponent implements OnInit {
 
 
 
-  constructor( public chatService: ChatService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder) { }
+  constructor( private chatService: ChatService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private authService: AuthService) { }
 
   async ngOnInit() {
+    this.authService.getCurrentUser().subscribe(val => this.user = val);
+
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
@@ -79,7 +84,7 @@ async clicked()
 {
   if ((this.FieldsForm.get('fieldColumn').value === undefined) && ( this.FieldsForm.get('fieldTable').value === undefined))
    {
-     alert ("you shoud select a field");
+this.fieldmissing=true;
    }
 else{
   this.synonyms = (await (this.chatService.SendSynonyms(this.FieldsForm.get('fieldTable').value, this.FieldsForm.get('fieldColumn').value)));
@@ -123,8 +128,8 @@ async onSubmit() {
      }
 
    }
-    let answer = await (this.chatService.addSynonyms(this.finalList, this.FieldsForm.get('fieldTable').value,this.columnField));
-    console.log(answer);
+    this.answer = await (this.chatService.addSynonyms(this.finalList, this.FieldsForm.get('fieldTable').value,this.columnField));
+
   }
 
 onReset() {
@@ -133,7 +138,7 @@ onReset() {
   }
 onFileChange(event) {
 
-   if (event.target.files.length > 0) {
+  if (event.target.files.length > 0) {
       this.filePath = event.target.files[0];
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -144,6 +149,13 @@ onFileChange(event) {
 
       }
 
+      }
+      verifField()
+      {
+        if ((this.FieldsForm.get('fieldColumn').value === undefined) && ( this.FieldsForm.get('fieldTable').value === undefined))
+        {
+      this.fieldmissing=true;
+        }
       }
     }
 

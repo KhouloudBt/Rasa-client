@@ -1,7 +1,5 @@
-<div *ngIf="user ==='admin'"><app-navbar></app-navbar></div>
-<div *ngIf= "user === 'user'"> your results will be displayed here!</div>
-<div *ngIf="user != 'None'" class="alert alert-success alert-dismissible fade show" role="alert">
-  Yoy are logged in as <strong>>{{user}}</strong>  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button></div>
-<app-chat></app-chat>
+<app-auth *ngIf=" user === 'None'"></app-auth>
+<div *ngIf="user ==='admin'"><app-admin></app-admin></div>
+<div *ngIf="user ==='user'"><app-user></app-user></div>
+
+

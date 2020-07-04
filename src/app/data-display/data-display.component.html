@@ -1,1 +1,14 @@
-<p>data-display works!</p>
+<table datatable [dtOptions]="dtOptions" class="table row-border hover" *ngIf="this.temp">
+  <thead>
+    <tr *ngFor ="let key of keys">
+      <th>{{key}}</th>
+    </tr>
+  </thead>
+  <tbody>
+     <div *ngFor="let value of values">
+    <tr *ngFor="let v of value">
+      <td>{{v}}</td>
+    </tr>
+  </div>
+ </tbody>
+</table>

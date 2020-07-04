@@ -1,14 +1,18 @@
+import { AuthService } from './../auth/auth.service';
 import { ChatService } from './../angular-bot/chat.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validator, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
   selector: 'app-switch',
   templateUrl: './switch.component.html',
-  styleUrls: ['./switch.component.css']
+  styleUrls: ['./switch.component.scss']
 })
 export class SwitchComponent implements OnInit {
+  user : any;
+  loading: boolean = false;
   f: FormGroup;
   submitted: boolean;
   dbusername: FormControl;
@@ -17,7 +21,12 @@ export class SwitchComponent implements OnInit {
   dbdriver: FormControl;
   dbdialect: FormControl;
   dbhost: FormControl;
-  constructor( private chatSerivce: ChatService, private formBuilder: FormBuilder) {
+  constructor(
+     private chatSerivce: ChatService,
+     private formBuilder: FormBuilder,
+     private  authService: AuthService,
+     private router: Router,
+       ) {
 
     this.dbusername = new FormControl('', [Validators.required]);
     this.dbname = new FormControl('', [Validators.required]);
@@ -46,14 +55,17 @@ export class SwitchComponent implements OnInit {
     this.dbdialect = this.f.get('dbdialect').value;
     this.dbhost = this.f.get('dbhost').value;
     this.submitted = true;
+    this.loading=true;
     const answer = await this.chatSerivce.connectToDatabase(this.dbusername, this.dbpassword,
        this.dbname, this.dbhost, this.dbdriver, this.dbdialect);
-    console.log(answer);
-
+    alert(answer);
+    this.router.navigate(['/add']);
 
 
   }
   ngOnInit() {
+    this.authService.getCurrentUser().subscribe(val => this.user = val);
+
   }
 
 

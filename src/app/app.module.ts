@@ -16,6 +16,9 @@ import { SendSynonymsComponent } from './send-synonyms/send-synonyms.component';
 import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { AdminComponent } from './admin/admin.component';
+import { UserComponent } from './user/user.component';
 
 
 
@@ -32,6 +35,9 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     AuthComponent,
     HomeComponent,
     ChangePasswordComponent,
+    NotFoundComponent,
+    AdminComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

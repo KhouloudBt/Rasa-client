@@ -1,9 +1,8 @@
-<fieldset class="border p-2">
-  <legend class="w-auto">Add synonyms to database fields:</legend>
-<form [formGroup]="f" (ngSubmit)="onSubmit()">
+
+<div class="center">
+  <form [formGroup]="f" (ngSubmit)="onSubmit()" class="login">
   <div class="form-group">
     <div class="form-group row">
-
 <label for ="username"> Username</label>
 <input #username type ="text" required placeholder="exp:root" formControlName="dbusername" class="form-control"
 [ngClass]="{'is-invalid': dbusername.errors && submitted, 'is-valid':dbusername.valid}">
@@ -46,9 +45,10 @@
   <strong> database dialect required </strong>
 </div>
 </div>
-<input type="submit" class="btn btn-primary" value="Submit">
-</div>
+<button [disabled]="loading" class=" btn Sbtn-info">
+  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+  Connect
+</button></div>
 </form>
-</fieldset>
-
+</div>
 

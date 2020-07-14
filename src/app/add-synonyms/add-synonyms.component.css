@@ -19,10 +19,11 @@ width: 200px
 }
 fieldset {
   background-color: #eeeeee;
-  margin-top: 100px;
+  margin-top: 35px;
   margin-left: 100px;
   margin-block-end: auto;
   margin-right: 150px;
+  width: auto;
 }
 
 legend {
@@ -140,4 +141,18 @@ input {
 }
 .custom-select{
   display: inline-block;
+}
+.md{
+  padding-right: 50px;
+}
+.center{
+  padding-left: 120px;
+  padding-right: 120px;
+}
+.fd{
+  padding-top: 25px;
+}
+.fc
+{
+  width: fit-content;
 }

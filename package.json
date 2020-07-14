@@ -27,6 +27,7 @@
     "datatables.net": "^1.10.21",
     "datatables.net-bs4": "^1.10.21",
     "datatables.net-buttons": "^1.6.2",
+    "datatables.net-buttons-dt": "^1.6.2",
     "datatables.net-dt": "^1.10.21",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",

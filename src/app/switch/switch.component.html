@@ -1,7 +1,9 @@
-
+<app-navbar></app-navbar>
+<app-chat></app-chat>
 <div class="center">
   <form [formGroup]="f" (ngSubmit)="onSubmit()" class="login">
   <div class="form-group">
+  <div class ="sub-entry">
     <div class="form-group row">
 <label for ="username"> Username</label>
 <input #username type ="text" required placeholder="exp:root" formControlName="dbusername" class="form-control"
@@ -24,6 +26,8 @@
   <strong>database name required</strong>
 </div>
 </div>
+</div>
+<div class ="sub-entry">
 <div class="form-group row">
 <label for ="dbhost"> Host</label>
 <input #dbhost type ="text" required placeholder="exp:localhost" formControlName="dbhost" class="form-control"[ngClass]="{'is-invalid': dbhost.errors && submitted, 'is-valid':dbhost.valid}">
@@ -45,10 +49,12 @@
   <strong> database dialect required </strong>
 </div>
 </div>
-<button [disabled]="loading" class=" btn Sbtn-info">
-  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-  Connect
-</button></div>
+</div>
+
+</div>
+<div class="bouton">
+  <button type="button" class="btn btn-info">Submit</button>
+  </div>
 </form>
 </div>
 

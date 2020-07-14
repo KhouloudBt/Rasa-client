@@ -18,24 +18,21 @@ export class AddSynonymsComponent implements OnInit {
   @ViewChild('Editmodal', {static: false}) Editmodal: ElementRef;
 
   answer : any;
-  user : any;
+  user : any; //the current user
   public send = false;
   public tableField: any;
   public columnField = "none";
-  fieldmissing : boolean = false;
+  fieldmissing : boolean = false; //=user hasn't selected a field
   public newSynonym: any;
   public newlist = [];
-  public finalList: any[] = [];
-  dataTable: any;
-  dtOptions: any;
-  tableData = [];
+  public finalList: any[] = []; //the filnal list of synonyms: file union table of synonyms
   synonyms: Synonym[] = [];
-  public toEditSyn: Synonym = new Synonym(-1, " ");
+  public toEditSyn: Synonym = new Synonym(-1, " "); //the synonym that the user wants to edit
   submitted = false;
   fields: Fields;
   filePath: any;
-  mixed: any;
-  seperate: any;
+  mixed: any; //the list of tables and columns recieved from the server
+  seperate: any; //the list of tables and columns recieved from the server arranged seperately
   public columns: any;
   public tables: any;
   public fileinput: string [] = [];
@@ -44,36 +41,31 @@ export class AddSynonymsComponent implements OnInit {
     fieldColumn: new FormControl(),
     addFile: new FormControl(),
   });
-  params = {offset: 0, limit: 10};
-  itemCount = 0;
-  items = [];
-
-
-
-
 
 
   constructor( private chatService: ChatService, private cd: ChangeDetectorRef, private formBuilder: FormBuilder, private authService: AuthService) { }
 
   async ngOnInit() {
+    //get the current user
     this.authService.getCurrentUser().subscribe(val => this.user = val);
-
+    //getting the fields of the database  from server
     this.fields = await this.chatService.getFields();
     this.mixed = this.fields.mixed;
     this.tables = this.fields.tables;
+    // when user selects a table, the second select would be filled with columns relative to that table and reset to all list of syns
     this.FieldsForm.get('fieldTable').valueChanges.subscribe(x => {this.columns = this.mixed[x], this.synonyms = [];
                                                                    this.newlist = []; this.finalList = []; });
     }
 
   get f() { return this.FieldsForm.controls; }
-
+// return an Object Syn given its id
 public  findByIndex ( id: number): Synonym{
    for (let syn of this.synonyms)
    {
      if (syn.id === id){return syn ;}
    }
 }
-
+//adds a new synonym to the list
 public AddSynonym()
 {
   const newSyn = new Synonym(((this.synonyms.length ) + 1 ), this.newSynonym);
@@ -86,6 +78,7 @@ async clicked()
    {
 this.fieldmissing=true;
    }
+   //getting the list of synonyms relative to the table/column selected
 else{
   this.synonyms = (await (this.chatService.SendSynonyms(this.FieldsForm.get('fieldTable').value, this.FieldsForm.get('fieldColumn').value)));
 
@@ -98,13 +91,14 @@ console.log( this.findByIndex(this.toEditSyn.id));
 console.log(this.synonyms);
 
 }
+// to remove a synonym object from the list
 public Remove( syn: Synonym)
 {
   this.synonyms = this.synonyms.filter(item => item.id !== syn.id);
 }
 
 public SetToEditSyn(syn : Synonym)
-{ this.toEditSyn = syn; }
+{ this.toEditSyn = syn; } // sets the given syn as the syn to edit
 
 async onSubmit() {
     this.submitted = true;
@@ -112,9 +106,6 @@ async onSubmit() {
     {
       this.columnField = this.FieldsForm.get('fieldColumn').value;
     }
-
-
-
 
    for (let syn in this.synonyms)
    {

@@ -1,19 +1,22 @@
+<app-navbar></app-navbar>
+<app-chat></app-chat>
 
-<div *ngIf="answer" class="alert alert-success alert-dismissible fade show alert-trim" role="alert">
+<!-- <div *ngIf="answer" class="alert alert-success alert-dismissible fade show alert-trim" role="alert">
   {{answer}}  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button></div>
   <div *ngIf="fieldmissing" class="alert alert-danger alert-dismissible fade show alert-trim" role="alert">
     You should select a field ! <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
-    </button></div>
+    </button></div> -->
+  <div class="fd">
 <fieldset class="border p-2 form-group">
   <legend class="w-auto">Add synonyms to database fields:</legend>
   <form [formGroup]="FieldsForm" (ngSubmit)="onSubmit()">
     <div class="form-group row">
         <div class="form-group col">
             <label for="fieldTable">Please choose a table</label>
-            <select formControlName="fieldTable" id="fieldTable" class="custom-select form-control" required [ngClass]="{ 'is-invalid': submitted && f.fieldTable.errors }">
+            <select formControlName="fieldTable" id="fieldTable" class="custom-select form-control fc" required [ngClass]="{ 'is-invalid': submitted && f.fieldTable.errors }">
                <option *ngFor= "let table of tables" [value]="table">{{table}}</option>
             </select>
         </div>
@@ -24,14 +27,13 @@
       <button type="button" class="btn btn-outline-success" data-toggle="collapse" href="#choosecolumn" role="button" aria-expanded="false" aria-controls="choosecolumn">Choose column</button>
       </div>
     </div>
-    <div class="collapse" id="choosecolumn">
+        <div class="collapse" id="choosecolumn">
 
         <div class="form-group row " >
              <div class="form-group col">
               <label for="fieldColumn">Please choose a column</label>
 
-
-           <select formControlName="fieldColumn" id="fieldColumn" class="custom-select form-control">
+           <select formControlName="fieldColumn" id="fieldColumn" class="custom-select form-control fc">
                 <option *ngFor= "let column of columns" [value]="column"> {{column}}</option>
             </select>
         </div>
@@ -42,7 +44,7 @@
             <button type="button" class="btn btn-dark bouton" data-toggle="collapse" href="#addFile" role="button" aria-expanded="false" aria-controls="addFile" (click)="verifField()">Add a file</button>
           </div>
             <div class="col">
-              <button type="button" class="btn btn-dark" data-toggle="collapse" href="#sendSynonyms" role="button" aria-expanded="false" aria-controls="addFile" (click)="clicked()">Enter synonyms in textarea</button>
+              <button type="button" class="btn btn-dark" data-toggle="collapse" href="#sendSynonyms" role="button" aria-expanded="false" aria-controls="addFile" (click)="clicked()">Edit manually</button>
           </div>
         </div>
 
@@ -53,7 +55,7 @@
           </div>
          </div>
           <div class="collapse" id="sendSynonyms" data-parent=#collapse>
-            <table #dataTable class=" table table-responsive table-lg  table-hover">
+            <table #dataTable class=" table table-responsive table-sm  table-hover center">
               <thead class="thead-dark">
                 <tr>
                   <th><button class="btn btn-light" data-target=#Addmodal data-toggle="modal">
@@ -84,7 +86,7 @@
                 <button type="button" class="close" data-dismiss="modal">
                     &times;
                 </button>
-                <h4 class="modal-title">Add synonym</h4>
+                <h4 class="modal-title md">Add synonym</h4>
             </div>
             <div class="modal-body">
                 <form>
@@ -113,7 +115,7 @@ data-keyboard="false" data-backdrop="static">
         <button type="button" class="close" data-dismiss="modal">
             &times;
         </button>
-        <h4 class="modal-title">Edit synonym</h4>
+        <h4 class="modal-title md">Edit synonym</h4>
     </div>
     <div class="modal-body">
         <form>
@@ -140,5 +142,5 @@ data-keyboard="false" data-backdrop="static">
 
 </form>
 </fieldset>
-
+</div>
 

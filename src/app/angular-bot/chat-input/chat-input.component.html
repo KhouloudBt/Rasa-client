@@ -1,1 +1,6 @@
 
+    <textarea type="text" class="chat-input-text" placeholder="Type message..."
+    #message (keydown.enter)="onSubmit()" (keyup.enter)="message.value = ''" (keyup.escape)="dismiss.emit()"></textarea>
+<button type="submit" class="chat-input-submit" (click)="onSubmit()">
+{{buttonText}}
+</button>

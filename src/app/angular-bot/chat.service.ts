@@ -228,20 +228,24 @@ async getFields(): Promise<Fields> {
 
 
 
-  async getBotAnswer(msg: string) {
-    let botMessage : Message;
-    const userMessage = new Message('user', msg, new Date().getTime());
-    this.conversation.next([userMessage]);
+  async getBotAnswer(msg: string) :Promise<string>{
+    let botMessage :string;
+    // const userMessage = new Message('user', msg, new Date().getTime());
+    // this.conversation.next([userMessage]);
     let answer =  await this.getBotMessage(msg);
     if (answer == "result") {
       this.SetShowResult(true as unknown as Observable<any>);
-       botMessage = new Message('bot', "your request has been treated successfully", new Date().getTime());
+      //  botMessage = new Message('bot', "your request has been treated successfully", new Date().getTime());
+    botMessage="your request has been treated successfully";}
+    else {
+      botMessage = answer;
+      // botMessage = new Message('bot', answer, new Date().getTime());
     }
-    else { botMessage = new Message('bot', answer, new Date().getTime());}
 
-    setTimeout(() => {
-      this.conversation.next([botMessage]);
-    }, 1500);
+    // setTimeout(() => {
+    //   this.conversation.next([botMessage]);
+    // }, 1500);
+    return botMessage;
 
   }
 

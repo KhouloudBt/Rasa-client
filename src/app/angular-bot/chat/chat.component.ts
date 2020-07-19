@@ -14,9 +14,7 @@ export class ChatComponent implements OnInit {
   @Input() public buttonText = '↩︎';
   @Input() public theme: 'blue' | 'grey' | 'red' = 'blue';
   @Input() public botName = 'Bot';
-  // 'https://cdn.dribbble.com/users/275794/screenshots/3128598/gbot_800.png'
   @Input() public botAvatar = '../../../assets/Bot.png' ;
-  // 'https://storage.proboards.com/6172192/images/gKhXFw_5W0SD4nwuMev1.png'
   @Input() public userAvatar = '../../../assets/user.png';
   // @Input() public startingMessage: string = 'Hi, how can we help you?'
   @Input() public opened  = true;
@@ -55,15 +53,23 @@ export class ChatComponent implements OnInit {
       this.bottom.nativeElement.scrollIntoView();
     }
   }
+  public addMessage(author : string, content: string) {
+    this.messages.unshift({
+      author,
+      content,
+      date: new Date().getTime(),
+    })
+    this.scrollToBottom()
+  }
 
   public focusMessage() {
     this.focus.next(true);
   }
 
   ngOnInit() {
-      this.chatService.conversation.subscribe((val) => {
-      this.messages = this.messages.concat(val);
-    });
+    //   this.chatService.conversation.subscribe((val) => {
+    //   this.messages = this.messages.concat(val);
+    // });
       this.client = {
       name: 'Guest User',
       status: 'online',
@@ -85,9 +91,11 @@ export class ChatComponent implements OnInit {
   public toggleChat() {
     this.visible = !this.visible;
   }
-  sendMessage() {
+  async sendMessage() {
+    this.addMessage('user',this.valeur);
+    let answer = await this.chatService.getBotAnswer(this.valeur);
+    this.addMessage('bot', answer);
     // this.scrollToBottom();
-    this.chatService.getBotAnswer(this.valeur);
     this.valeur = '';
 
   }

@@ -219,8 +219,10 @@ async getFields(): Promise<Fields> {
      });
      let result= []
 
-      await this.http.post<any>(this.urlAction, dataToSend).toPromise().then(
-      res => { result= res['messages'][0]['custom']['mixed'];
+      await this.http.post<any>(this.urlIntent, dataToSend).toPromise().then(
+      res => { result= res['messages'][0];
+      console.log(res);
+      console.log(result);
     });
       // tslint:disable-next-line: quotemark
       return result;

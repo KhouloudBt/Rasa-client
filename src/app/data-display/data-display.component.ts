@@ -11,16 +11,8 @@ declare var $;
 export class DataDisplayComponent implements OnInit {
   @ViewChild('dataTable', {static: true}) table;
   dataTable: any;
-  products=[{id:  "1", price:"1500", name:"TOSHIBA", category:"pc" },
-{id:  "2", price:"2000", name:"Hwawei Mediapad", category:"phone" },
-{id:  "3", price:"2550", name:"ASUS 1500", category:"pc" },
-{id:  "4", price:"500", name:"Samsung ", category:"tablet" },
-{id:  "5", price:"975", name:"Logicom La Tab Link 71P ", category:"phone" },
-{id:  "6", price:"2600", name:"Lenovo 1600", category:"pc" },
-{id:  "7", price:"700", name:"IKU T47", category:"tablet" },
-{id:  "8", price:"850", name:"Logimcom Latab", category:"phone" },
-{id:  "9", price:"965", name:"Samsung A50", category:"phone" },
-{id:  "10", price:"1750", name:"HP", category:"pc" }]
+  data=[];
+  temp=false;
 
 
 
@@ -56,10 +48,19 @@ export class DataDisplayComponent implements OnInit {
 // }
 
 public dtOptions: any = {};
-constructor(){
+constructor( public chatService:ChatService){
 }
 
-ngOnInit(): void {
+async ngOnInit() {
+
+  this.chatService.getShowResult().subscribe(val => this.temp = val);
+  console.log("hi", this.temp);
+  if (this.temp=true)
+  {
+    this.data = await this.chatService.getResult();
+    console.log(this.data)
+  }
+
   this.dtOptions = {
     pagingType: 'full_numbers',
     pageLength: 5,
@@ -68,7 +69,7 @@ ngOnInit(): void {
       // // { "extend": 'excel', "text":'<i class="btn btn-danger" aria-hidden="true"></i> Excel' },
       'csv',
       'excel',
-      'pdf'
+      'pdfHtml5'
     ]
   };
   this.dataTable = $(this.table.nativeElement);

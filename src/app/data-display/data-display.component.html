@@ -1,7 +1,8 @@
-<div class ="center">
-<table datatable [dtOptions]="dtOptions" class="row-border hover">
+<div *ngIf="this.temp == true">
+<div class ="center" >
+<table  datatable [dtOptions]="dtOptions" class="row-border hover" >
 
-<thead>
+<!-- <thead>
   <tr>
     <th>ID</th>
     <th>price</th>
@@ -9,18 +10,18 @@
     <th>category</th>
 
   </tr>
-</thead>
-<tbody>
-  <tr *ngFor="let product of products">
+</thead> -->
+<!-- <tbody>
+  <tr *ngFor="let product of prod">
     <td>{{ product.id }}</td>
     <td>{{ product.price }}</td>
     <td>{{ product.name }}</td>
     <td>{{ product.category }}</td>
   </tr>
-</tbody>
+</tbody> -->
 </table>
 </div>
-
+</div>
 <!-- <table datatable [dtOptions]="dtOptions" class="table row-border hover" *ngIf="this.temp">
   <thead>
     <tr *ngFor ="let key of keys">
